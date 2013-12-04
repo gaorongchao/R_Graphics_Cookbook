@@ -1,4 +1,5 @@
 R_Graphics_Cookbook
 ===================
 
-ç¿»è¯‘ä»¥åŠR Graphics Cookbookçš„ä»£ç 
+·­ÒëÒÔ¼°R Graphics CookbookµÄ´úÂëÍ¼ÐÎÕûÀí
+
