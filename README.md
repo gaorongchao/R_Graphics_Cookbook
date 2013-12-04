@@ -1,4 +1,4 @@
-R_Graphics_Cookbook
+R Graphics Cookbook
 ===================
 
 翻译以及R Graphics Cookbook的代码图形整理
