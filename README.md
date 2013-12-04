@@ -9,6 +9,6 @@ R_Graphics_Cookbook
 * 后缀为.md的是markdown格式的文档+代码
 
 ## 书籍
-R Graphics Cookbook 可以在网上免费下载，如果您找不到可以到百度云中下载：http://pan.baidu.com/share/link?shareid=2445997500&uk=1292783730。
-如果您也没有帐号：可以发邮件到513428834@qq.com索要，注明索要的书名。
+R Graphics Cookbook 可以在网上免费下载，如果您找不到可以到百度云中下载：http://pan.baidu.com/share/link?shareid=2445997500&uk=1292783730 
+如果您也没有百度的帐号：可以发邮件到513428834@qq.com索要，注明索要的书名。
 
