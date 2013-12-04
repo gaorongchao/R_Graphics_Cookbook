@@ -28,21 +28,21 @@ R Graphics Cookbook 可以在网上免费下载，如果您找不到可以到百度云中下载：http://p
 那么你就可以开始本书的阅读之旅，通过丰富的R语言参数，让你的数据通过图形跃然纸上。
 
 ## 目录
-### Preface
-### 1. R base
-### 2. Quickly Exploring Data
-### 3. Bar Graphs
-### 4. Line Graphs
-### 5. Scatter Plots
-### 6. Summarized Data Distributions
-### 7. Annotations
-### 8. Axes
-### 9. Controlling the Overall Appearance of Graphs
-### 10. Legends
-### 11. Facets
-### 12. Using Colors in Plots 
-### 13. Miscellaneous Graphs
-### 14. Output for Presentation
-### 15. Getting Your data into Shape
-### A. Introduction to ggplot2
-### Index
+* Preface
+* 1. R base
+* 2. Quickly Exploring Data
+* 3. Bar Graphs
+* 4. Line Graphs
+* 5. Scatter Plots
+* 6. Summarized Data Distributions
+* 7. Annotations
+* 8. Axes
+* 9. Controlling the Overall Appearance of Graphs
+* 10. Legends
+* 11. Facets
+* 12. Using Colors in Plots 
+* 13. Miscellaneous Graphs
+* 14. Output for Presentation
+* 15. Getting Your data into Shape
+* A. Introduction to ggplot2
+* Index
