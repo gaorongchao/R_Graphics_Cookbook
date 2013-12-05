@@ -9,7 +9,8 @@ R Graphics Cookbook
 每一章提供以下三个文件。
 * 后缀为.Rmd的为代码，可以文档+代码，可以在RStudio中运行使用
 * 后缀为.html格式的文件，可以下载后用浏览器打开，里面包括文档+代码+代码运行的结果
-* 后缀为.md的是markdown格式的文档+代码
+* 后缀为.md的是markdown格式的文档+代码+结果，图片依赖于figure文件
+
 
 ## 书籍
 R Graphics Cookbook 可以在网上免费下载，如果您找不到可以到百度云中下载：http://pan.baidu.com/share/link?shareid=2445997500&uk=1292783730 
