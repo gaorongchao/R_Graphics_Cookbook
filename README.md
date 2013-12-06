@@ -52,3 +52,7 @@ R Graphics Cookbook 可以在网上免费下载，如果您找不到可以到百度云中下载：http://p
 * 15. Getting Your data into Shape
 * A. Introduction to ggplot2
 * Index
+
+
+# 原书内容变更
+* 展示数据的过程，因为数据太多，统一在代码上用head也就是去数据的前几行表示，如果您愿意看完整的数据，请把head()去掉。
