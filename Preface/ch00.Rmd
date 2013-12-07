@@ -1,5 +1,6 @@
 preface: Preface
-==================
+```{r}
+#==================
 install.packages("ggplot2")
 install.packages("gcookbook")
     
