@@ -44,7 +44,7 @@ R Graphics Cookbook 可以在网上免费下载，如果您找不到可以到百度云中下载：http://p
 * 7. Annotations
 * 8. Axes
 * 9. Controlling the Overall Appearance of Graphs
-* 10. Legends
+* 10. Legends (图例) *underway*
 * 11. Facets
 * 12. Using Colors in Plots 
 * 13. Miscellaneous Graphs
