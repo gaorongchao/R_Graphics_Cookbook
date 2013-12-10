@@ -1,6 +1,11 @@
-chapter: Legends
+#chapter10: Legends
+##10.1 删除图例
+**Problem** 
+你想从图片中删除图例
+**解决方案**
+用guides()
+??guides
 ```{r}
-#==================
 library(ggplot2)
 # The base plot (with legend)
 p <- ggplot(PlantGrowth, aes(x=group, y=weight, fill=group)) + geom_boxplot()

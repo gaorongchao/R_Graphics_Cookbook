@@ -10,3 +10,27 @@ install.packages(c("ggplot2","gcookbook"))
 library(ggplot2)
 library(gcookbook)
 ```
+
+## 1.1 安装包
+命令：
+```{r，eval=FALSE}
+install.packages("包的名称")
+```
+注意这里包的名称要放在双引号中间。
+**讨论**
+当你安装一个包的时候，R会自动安装这个包所依赖的包。
+
+## 1.2 载入包
+命令：
+```{r,eval=FALSE}
+library(包的名称)
+```
+这里就不需要双引号了。
+如果你试图载入一个没有安装的包，那么很显然，会报错，请首先通过1.1的内容来安装包。
+## 1.3 载入具有分隔符的文本数据
+命令：
+```{r,eval=FALSE}
+data = read.csv("datafile.csv")
+```
+## 1.4 从Excel中载入数据
+## 1.5 cong SPSS文件中载入数据
