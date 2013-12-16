@@ -1,7 +1,6 @@
 # chapter: Scatter Plots
 ## 5.1.Making a Basic scatter Plot
-```{r}
-#==================
+```{r,fig.width=6,fig.height=5}
 library(gcookbook) # For the data set
 library(ggplot2)
 
@@ -10,36 +9,29 @@ head(heightweight[, c("ageYear", "heightIn")])
 
 
     
-#====================================
 ggplot(heightweight, aes(x=ageYear, y=heightIn)) + geom_point()
     
     
-#====================================
 ggplot(heightweight, aes(x=ageYear, y=heightIn)) + geom_point(shape=21)
     
     
-#====================================
 ggplot(heightweight, aes(x=ageYear, y=heightIn)) + geom_point(size=1.5)
 ```
 ## 5.2.Grouping Data Points by a Variable Using  
-```{r}
-#====================================
+```{r,fig.width=6,fig.height=5}
 library(gcookbook) # For the data set
 # Show the three columns we'll use
 head(heightweight[, c("sex", "ageYear", "heightIn")])
 
-#====================================
 ggplot(heightweight, aes(x=ageYear, y=heightIn, colour=sex)) + geom_point()
 
 ggplot(heightweight, aes(x=ageYear, y=heightIn, shape=sex)) + geom_point()
     
     
-#====================================
 ggplot(heightweight, aes(x=ageYear, y=heightIn, shape=sex, colour=sex)) +
     geom_point()
     
     
-#====================================
 ggplot(heightweight, aes(x=ageYear, y=heightIn, shape=sex, colour=sex)) +
     geom_point() +
     scale_shape_manual(values=c(1,2)) +
@@ -47,20 +39,17 @@ ggplot(heightweight, aes(x=ageYear, y=heightIn, shape=sex, colour=sex)) +
     
 ```  
 ## 5.3.Using Different Point Shapes
-```{r}
-#====================================
+```{r,fig.width=6,fig.height=5}
 library(gcookbook) # For the data set
 
 ggplot(heightweight, aes(x=ageYear, y=heightIn)) + geom_point(shape=3)
     
     
-#====================================
 # Use slightly larger points and use a shape scale with custom values
 ggplot(heightweight, aes(x=ageYear, y=heightIn, shape=sex)) +
     geom_point(size=3) + scale_shape_manual(values=c(1, 4))
     
     
-#====================================
 # Make a copy of the data
 hw <- heightweight
 # Categorize into <100 and >=100 groups
@@ -76,20 +65,17 @@ ggplot(hw, aes(x=ageYear, y=heightIn, shape=sex, fill=weightGroup)) +
       guide=guide_legend(override.aes=list(shape=21)))
 ```    
 ## 5.4.Mapping a Continuous Variable to Color or Size
-```{r}
-#====================================
+```{r,fig.width=6,fig.height=5}
 library(gcookbook) # For the data set
 
 # List the four columns we'll use
 head(heightweight[, c("sex", "ageYear", "heightIn", "weightLb")])
 
-#====================================
 ggplot(heightweight, aes(x=ageYear, y=heightIn, colour=weightLb)) + geom_point()
 
 ggplot(heightweight, aes(x=ageYear, y=heightIn, size=weightLb)) + geom_point()
     
     
-#====================================
 ggplot(heightweight, aes(x=weightLb, y=heightIn, fill=ageYear)) +
     geom_point(shape=21, size=2.5) +
     scale_fill_gradient(low="black", high="white")
@@ -101,32 +87,27 @@ ggplot(heightweight, aes(x=weightLb, y=heightIn, fill=ageYear)) +
                         guide=guide_legend())
     
     
-#====================================
 ggplot(heightweight, aes(x=ageYear, y=heightIn, size=weightLb, colour=sex)) +
     geom_point(alpha=.5) +
     scale_size_area() +     # Make area proportional to numeric value
     scale_colour_brewer(palette="Set1")
 ```    
 ## 5.5.Dealing with Overplotting
-```{r}
-#====================================
+```{r,fig.width=6,fig.height=5}
 sp <- ggplot(diamonds, aes(x=carat, y=price))
 
 sp + geom_point()
-#====================================
 sp + geom_point(alpha=.1)
 
 sp + geom_point(alpha=.01)
     
     
-#====================================
 sp + stat_bin2d()
 
 sp + stat_bin2d(bins=50) +
     scale_fill_gradient(low="lightblue", high="red", limits=c(0, 6000))
     
     
-#====================================
 #install.packages("hexbin")
 library(hexbin)
 
@@ -140,7 +121,6 @@ sp + stat_binhex() +
                         limits=c(0, 6000))
     
     
-#====================================
 sp1 <- ggplot(ChickWeight, aes(x=Time, y=weight))
 
 sp1 + geom_point()
@@ -151,13 +131,11 @@ sp1 + geom_point(position="jitter")
 sp1 + geom_point(position=position_jitter(width=.5, height=0))
     
     
-#====================================
 sp1 + geom_boxplot(aes(group=Time))
     
 ```    
 ## 5.6.Adding Fitted Regression Model Lines
-```{r}
-#====================================
+```{r,fig.width=6,fig.height=5}
 library(gcookbook) # For the data set
 
 # The base plot
@@ -166,7 +144,6 @@ sp <- ggplot(heightweight, aes(x=ageYear, y=heightIn))
 sp + geom_point() + stat_smooth(method=lm)
     
     
-#====================================
 # 99% confidence region
 sp + geom_point() + stat_smooth(method=lm, level=0.99)
 
@@ -174,17 +151,14 @@ sp + geom_point() + stat_smooth(method=lm, level=0.99)
 sp + geom_point() + stat_smooth(method=lm, se=FALSE)
     
     
-#====================================
 sp + geom_point(colour="grey60") +
     stat_smooth(method=lm, se=FALSE, colour="black")
     
     
-#====================================
 sp + geom_point(colour="grey60") + stat_smooth()
 sp + geom_point(colour="grey60") + stat_smooth(method=loess)
     
     
-#====================================
 library(MASS) # For the data set
 
 b <- biopsy
@@ -194,14 +168,12 @@ b$classn[b$class=="malignant"] <- 1
 
 head(b)
 
-#====================================
 ggplot(b, aes(x=V1, y=classn)) +
     geom_point(position=position_jitter(width=0.3, height=0.06), alpha=0.4,
                shape=21, size=1.5) +
     stat_smooth(method=glm, family=binomial)
     
     
-#====================================
 sps <- ggplot(heightweight, aes(x=ageYear, y=heightIn, colour=sex)) +
        geom_point() +
        scale_colour_brewer(palette="Set1")
@@ -209,13 +181,11 @@ sps <- ggplot(heightweight, aes(x=ageYear, y=heightIn, colour=sex)) +
 sps + geom_smooth()
     
     
-#====================================
 sps + geom_smooth(method=lm, se=FALSE, fullrange=TRUE)
     
 ```
 ## 5.7.Adding Fitted Lines from an Existing Model
-```{r}
-#====================================
+```{r,fig.width=6,fig.height=5}
 library(gcookbook) # For the data set
 
 model <- lm(heightIn ~ ageYear + I(ageYear^2), heightweight)
@@ -231,14 +201,12 @@ predicted <- data.frame(ageYear=seq(xmin, xmax, length.out=100))
 predicted$heightIn <- predict(model, predicted)
 head(predicted)
 
-#====================================
 sp <- ggplot(heightweight, aes(x=ageYear, y=heightIn)) +
       geom_point(colour="grey40")
 
 sp + geom_line(data=predicted, size=1)
     
     
-#====================================
 # Given a model, predict values of yvar from xvar
 # This supports one predictor and one predicted variable
 # xrange: If NULL, determine the x range from the model object. If a vector with
@@ -263,13 +231,11 @@ predictvals <- function(model, xvar, yvar, xrange=NULL, samples=100, ...) {
 }
     
     
-#====================================
 modlinear <- lm(heightIn ~ ageYear, heightweight)
 
 modloess  <- loess(heightIn ~ ageYear, heightweight)
     
     
-#====================================
 lm_predicted    <- predictvals(modlinear, "ageYear", "heightIn")
 loess_predicted <- predictvals(modloess, "ageYear", "heightIn")
 
@@ -277,7 +243,6 @@ sp + geom_line(data=lm_predicted, colour="red", size=.8) +
      geom_line(data=loess_predicted, colour="blue", size=.8)
     
     
-#====================================
 library(MASS) # For the data set
 b <- biopsy
 
@@ -285,11 +250,9 @@ b$classn[b$class=="benign"]    <- 0
 b$classn[b$class=="malignant"] <- 1
     
     
-#====================================
 fitlogistic <- glm(classn ~ V1, b, family=binomial)
     
     
-#====================================
 # Get predicted values
 glm_predicted <- predictvals(fitlogistic, "V1", "classn", type="response")
 
@@ -300,14 +263,12 @@ ggplot(b, aes(x=V1, y=classn)) +
     
 ```
 ## 5.8.Adding Fitted Lines from Multiple Existing Models
-```{r}
-#====================================
+```{r,fig.width=6,fig.height=5}
 make_model <- function(data) {
     lm(heightIn ~ ageYear, data)
 }
     
     
-#====================================
 library(gcookbook) # For the data set
 library(plyr)
 models <- dlply(heightweight, "sex", .fun = make_model)
@@ -315,35 +276,29 @@ models <- dlply(heightweight, "sex", .fun = make_model)
 # Print out the list of two lm objects, f and m
 models
 
-#====================================
 predvals <- ldply(models, .fun=predictvals, xvar="ageYear", yvar="heightIn")
 head(predvals)
 
     
-#====================================
 ggplot(heightweight, aes(x=ageYear, y=heightIn, colour=sex)) +
     geom_point() + geom_line(data=predvals)
     
     
-#====================================
 predvals <- ldply(models, .fun=predictvals, xvar="ageYear", yvar="heightIn",
                    xrange=range(heightweight$ageYear))
     
     
-#====================================
 ggplot(heightweight, aes(x=ageYear, y=heightIn, colour=sex)) +
     geom_point() + geom_line(data=predvals)
     
 ```
 ## 5.9.Adding Annotations with Model Coefficients
-```{r}
-#====================================
+```{r,fig.width=6,fig.height=5}
 library(gcookbook) # For the data set
 
 model <- lm(heightIn ~ ageYear, heightweight)
 summary(model)
 
-#====================================
 # First generate prediction data
 pred <- predictvals(model, "ageYear", "heightIn")
 sp <- ggplot(heightweight, aes(x=ageYear, y=heightIn)) + geom_point() +
@@ -352,11 +307,9 @@ sp <- ggplot(heightweight, aes(x=ageYear, y=heightIn)) + geom_point() +
 sp + annotate("text", label="r^2=0.42", x=16.5, y=52)
     
     
-#====================================
 sp + annotate("text", label="r^2 == 0.42", parse = TRUE, x=16.5, y=52)
     
     
-#====================================
 expression(r^2 == 0.42)  # Valid
 
 expression(r^2 == 0.42)
@@ -364,7 +317,6 @@ expression(r^2 == 0.42)
 
 expression(r^2 == 0.42)   # Not valid
     
-#====================================
 eqn <- as.character(as.expression(
   substitute(italic(y) == a + b * italic(x) * "," ~~ italic(r)^2 ~ "=" ~ r2,
     list(a = format(coef(model)[1], digits=3),
@@ -383,26 +335,21 @@ expression(italic(y) == "37.4" + "1.75" * italic(x) * "," ~ ~italic(r)^2 ~ "=" ~
 "0.42")
     
     
-#====================================
 sp + annotate("text", label=eqn, parse=TRUE, x=Inf, y=-Inf, hjust=1.1, vjust=-.5)
     
     
-#====================================
 ggplot(faithful, aes(x=eruptions, y=waiting)) + geom_point() + geom_rug()
     
     
-#====================================
 ggplot(faithful, aes(x=eruptions, y=waiting)) + geom_point() +
     geom_rug(position="jitter", size=.2)
     
 ```
 ## 5.11.Labeling Points in a Scatter Plot
-```{r}
-#====================================
+```{r,fig.width=6,fig.height=5}
 library(gcookbook) # For the data set
 subset(countries, Year==2009 & healthexp>2000)
 
-#====================================
 sp <- ggplot(subset(countries, Year==2009 & healthexp>2000),
              aes(x=healthexp, y=infmortality)) +
       geom_point()
@@ -411,54 +358,45 @@ sp + annotate("text", x=4350, y=5.4, label="Canada") +
      annotate("text", x=7400, y=6.8, label="USA")
     
     
-#====================================
 sp + geom_text(aes(label=Name), size=4)
     
     
-#====================================
 sp + geom_text(aes(label=Name), size=4, vjust=0)
 
 # Add a little extra to y
 sp + geom_text(aes(y=infmortality+.1, label=Name), size=4, vjust=0)
     
     
-#====================================
 sp + geom_text(aes(label=Name), size=4, hjust=0)
 
 sp + geom_text(aes(x=healthexp+100, label=Name), size=4, hjust=0)
     
     
-#====================================
 cdat <- subset(countries, Year==2009 & healthexp>2000)
 
 cdat$Name1 <- cdat$Name
     
     
-#====================================
 idx <- cdat$Name1 %in% c("Canada", "Ireland", "United Kingdom", "United States",
                          "New Zealand", "Iceland", "Japan", "Luxembourg",
                          "Netherlands", "Switzerland")
 idx
 
 
-#====================================
 cdat$Name1[!idx] <- NA
     
     
-#====================================
 cdat
 
     
     
-#====================================
 ggplot(cdat, aes(x=healthexp, y=infmortality)) +
     geom_point() +
     geom_text(aes(x=healthexp+100, label=Name1), size=4, hjust=0) +
     xlim(2000, 10000)
 ```
 ## 5.12.Creating a Balloon Plot
-```{r}
-#====================================
+```{r,fig.width=6,fig.height=5}
 library(gcookbook) # For the data set
 
 cdat <- subset(countries, Year==2009 &
@@ -470,7 +408,6 @@ cdat
 
     
     
-#====================================
 p <- ggplot(cdat, aes(x=healthexp, y=infmortality, size=GDP)) +
      geom_point(shape=21, colour="black", fill="cornsilk")
 
@@ -481,7 +418,6 @@ p
 p + scale_size_area(max_size=15)
     
     
-#====================================
 # Add up counts for male and female
 hec <- HairEyeColor[,,"Male"] + HairEyeColor[,,"Female"]
 
@@ -497,19 +433,16 @@ ggplot(hec, aes(x=Eye, y=Hair)) +
     
 ```
 ## 5.13.Making a Scatter Plot Matrix
-```{r}
-#====================================
+```{r,fig.width=6,fig.height=5}
 library(gcookbook) # For the data set
 c2009 <- subset(countries, Year==2009,
                 select=c(Name, GDP, laborrate, healthexp, infmortality))
 
 head(c2009)
 
-#====================================
 pairs(c2009[,2:5])
     
     
-#====================================
 panel.cor <- function(x, y, digits=2, prefix="", cex.cor, ...) {
     usr <- par("usr")
     on.exit(par(usr))
@@ -522,7 +455,6 @@ panel.cor <- function(x, y, digits=2, prefix="", cex.cor, ...) {
 }
     
     
-#====================================
 panel.hist <- function(x, ...) {
     usr <- par("usr")
     on.exit(par(usr))
@@ -536,13 +468,11 @@ panel.hist <- function(x, ...) {
 }
     
     
-#====================================
 pairs(c2009[,2:5], upper.panel = panel.cor,
                    diag.panel  = panel.hist,
                    lower.panel = panel.smooth)
     
     
-#====================================
 panel.lm <- function (x, y, col = par("col"), bg = NA, pch = par("pch"),
                             cex = 1, col.smooth = "black", ...) {
     points(x, y, pch = pch, col = col, bg = bg, cex = cex)
@@ -550,13 +480,8 @@ panel.lm <- function (x, y, col = par("col"), bg = NA, pch = par("pch"),
 }
     
     
-#====================================
 pairs(c2009[,2:5], pch=".",
                    upper.panel = panel.cor,
                    diag.panel  = panel.hist,
                    lower.panel = panel.lm)
-    
-    
-#==================
-
 ```
