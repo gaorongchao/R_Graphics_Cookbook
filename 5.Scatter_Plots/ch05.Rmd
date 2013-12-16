@@ -1,11 +1,13 @@
-chapter: Scatter Plots
+# chapter: Scatter Plots
+## 5.1.Making a Basic scatter Plot
 ```{r}
 #==================
 library(gcookbook) # For the data set
 library(ggplot2)
 
 # List the two columns we'll use
-heightweight[, c("ageYear", "heightIn")]
+head(heightweight[, c("ageYear", "heightIn")])
+
 
     
 #====================================
@@ -18,12 +20,13 @@ ggplot(heightweight, aes(x=ageYear, y=heightIn)) + geom_point(shape=21)
     
 #====================================
 ggplot(heightweight, aes(x=ageYear, y=heightIn)) + geom_point(size=1.5)
-    
-    
+```
+## 5.2.Grouping Data Points by a Variable Using  
+```{r}
 #====================================
 library(gcookbook) # For the data set
 # Show the three columns we'll use
-heightweight[, c("sex", "ageYear", "heightIn")]
+head(heightweight[, c("sex", "ageYear", "heightIn")])
 
 #====================================
 ggplot(heightweight, aes(x=ageYear, y=heightIn, colour=sex)) + geom_point()
@@ -42,7 +45,9 @@ ggplot(heightweight, aes(x=ageYear, y=heightIn, shape=sex, colour=sex)) +
     scale_shape_manual(values=c(1,2)) +
     scale_colour_brewer(palette="Set1")
     
-    
+```  
+## 5.3.Using Different Point Shapes
+```{r}
 #====================================
 library(gcookbook) # For the data set
 
@@ -69,13 +74,14 @@ ggplot(hw, aes(x=ageYear, y=heightIn, shape=sex, fill=weightGroup)) +
     scale_shape_manual(values=c(21, 24)) +
     scale_fill_manual(values=c(NA, "black"),
       guide=guide_legend(override.aes=list(shape=21)))
-    
-    
+```    
+## 5.4.Mapping a Continuous Variable to Color or Size
+```{r}
 #====================================
 library(gcookbook) # For the data set
 
 # List the four columns we'll use
-heightweight[, c("sex", "ageYear", "heightIn", "weightLb")]
+head(heightweight[, c("sex", "ageYear", "heightIn", "weightLb")])
 
 #====================================
 ggplot(heightweight, aes(x=ageYear, y=heightIn, colour=weightLb)) + geom_point()
@@ -100,14 +106,13 @@ ggplot(heightweight, aes(x=ageYear, y=heightIn, size=weightLb, colour=sex)) +
     geom_point(alpha=.5) +
     scale_size_area() +     # Make area proportional to numeric value
     scale_colour_brewer(palette="Set1")
-    
-    
+```    
+## 5.5.Dealing with Overplotting
+```{r}
 #====================================
 sp <- ggplot(diamonds, aes(x=carat, y=price))
 
 sp + geom_point()
-    
-    
 #====================================
 sp + geom_point(alpha=.1)
 
@@ -149,7 +154,9 @@ sp1 + geom_point(position=position_jitter(width=.5, height=0))
 #====================================
 sp1 + geom_boxplot(aes(group=Time))
     
-    
+```    
+## 5.6.Adding Fitted Regression Model Lines
+```{r}
 #====================================
 library(gcookbook) # For the data set
 
@@ -185,7 +192,7 @@ b <- biopsy
 b$classn[b$class=="benign"]    <- 0
 b$classn[b$class=="malignant"] <- 1
 
-b
+head(b)
 
 #====================================
 ggplot(b, aes(x=V1, y=classn)) +
@@ -205,7 +212,9 @@ sps + geom_smooth()
 #====================================
 sps + geom_smooth(method=lm, se=FALSE, fullrange=TRUE)
     
-    
+```
+## 5.7.Adding Fitted Lines from an Existing Model
+```{r}
 #====================================
 library(gcookbook) # For the data set
 
@@ -289,7 +298,9 @@ ggplot(b, aes(x=V1, y=classn)) +
                shape=21, size=1.5) +
     geom_line(data=glm_predicted, colour="#1177FF", size=1)
     
-    
+```
+## 5.8.Adding Fitted Lines from Multiple Existing Models
+```{r}
 #====================================
 make_model <- function(data) {
     lm(heightIn ~ ageYear, data)
@@ -323,7 +334,9 @@ predvals <- ldply(models, .fun=predictvals, xvar="ageYear", yvar="heightIn",
 ggplot(heightweight, aes(x=ageYear, y=heightIn, colour=sex)) +
     geom_point() + geom_line(data=predvals)
     
-    
+```
+## 5.9.Adding Annotations with Model Coefficients
+```{r}
 #====================================
 library(gcookbook) # For the data set
 
@@ -350,9 +363,6 @@ expression(r^2 == 0.42)
 
 
 expression(r^2 == 0.42)   # Not valid
-
-#Error: unexpected '=' in "expression(r^2 ="
-    
     
 #====================================
 eqn <- as.character(as.expression(
@@ -385,7 +395,9 @@ ggplot(faithful, aes(x=eruptions, y=waiting)) + geom_point() + geom_rug()
 ggplot(faithful, aes(x=eruptions, y=waiting)) + geom_point() +
     geom_rug(position="jitter", size=.2)
     
-    
+```
+## 5.11.Labeling Points in a Scatter Plot
+```{r}
 #====================================
 library(gcookbook) # For the data set
 subset(countries, Year==2009 & healthexp>2000)
@@ -443,8 +455,9 @@ ggplot(cdat, aes(x=healthexp, y=infmortality)) +
     geom_point() +
     geom_text(aes(x=healthexp+100, label=Name1), size=4, hjust=0) +
     xlim(2000, 10000)
-    
-    
+```
+## 5.12.Creating a Balloon Plot
+```{r}
 #====================================
 library(gcookbook) # For the data set
 
@@ -482,7 +495,9 @@ ggplot(hec, aes(x=Eye, y=Hair)) +
     geom_text(aes(y=as.numeric(Hair)-sqrt(count)/22, label=count), vjust=1,
               colour="grey60", size=4)
     
-    
+```
+## 5.13.Making a Scatter Plot Matrix
+```{r}
 #====================================
 library(gcookbook) # For the data set
 c2009 <- subset(countries, Year==2009,
