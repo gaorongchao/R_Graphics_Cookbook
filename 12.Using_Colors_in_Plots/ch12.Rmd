@@ -1,14 +1,14 @@
-chapter: Using Colors in Plots
-```{r}
-#==================
+# chapter12: Using Colors in Plots
+## 12.1.Setting the Colors of Objects
+```{r,fig.width=7,fig.height=5}
 library(ggplot2)
 ggplot(mtcars, aes(x=wt, y=mpg)) + geom_point(colour="red")
 
 library(MASS) # For the data set
 ggplot(birthwt, aes(x=bwt)) + geom_histogram(fill="red", colour="black")
-    
-    
-#====================================
+```    
+## 12.2.Mapping Variables to Colors 
+```{r,fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
 # These both have the same effect
@@ -23,12 +23,8 @@ ggplot(mtcars, aes(x=wt, y=mpg, colour=cyl)) + geom_point()
 
 ggplot(mtcars, aes(x=wt, y=mpg)) + geom_point(aes(colour=cyl))
     
-    
-#====================================
 str(cabbage_exp)
-
     
-#====================================
 # Convert to factor in call to ggplot()
 ggplot(mtcars, aes(x=wt, y=mpg, colour=factor(cyl))) + geom_point()
 
@@ -36,9 +32,9 @@ ggplot(mtcars, aes(x=wt, y=mpg, colour=factor(cyl))) + geom_point()
 m <- mtcars              # Make a copy of mtcars
 m$cyl <- factor(m$cyl)   # Convert cyl to a factor
 ggplot(m, aes(x=wt, y=mpg, colour=cyl)) + geom_point()
-    
-    
-#====================================
+```    
+## 12.3.Using a Different Palette for a Discrete Variable
+```{r,fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
 # Base plot
@@ -52,8 +48,6 @@ p + scale_fill_hue()
 # ColorBrewer palette
 p + scale_fill_brewer()
     
-    
-#====================================
 # Basic scatter plot
 h <- ggplot(heightweight, aes(x=ageYear, y=heightIn, colour=sex)) +
     geom_point()
@@ -64,24 +58,18 @@ h
 # Slightly darker
 h + scale_colour_hue(l=45)
     
-    
-#====================================
 library(RColorBrewer)
 display.brewer.all()
     
-    
-#====================================
 p + scale_fill_brewer(palette="Oranges")
     
-    
-#====================================
 p + scale_fill_grey()
 
 # Reverse the direction and use a different range of greys
 p + scale_fill_grey(start=0.7, end=0)
-    
-    
-#====================================
+```
+## 12.4.Using a Manually Defined Palette for a Discrete Variable
+```{r,fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
 # Base plot
@@ -93,19 +81,12 @@ h + scale_colour_manual(values=c("red", "blue"))
 # Using RGB values
 h + scale_colour_manual(values=c("#CC6666", "#7777DD"))
     
-    
-#====================================
 levels(heightweight$sex)
 
-# "f" "m"
-
-    
-    
-#====================================
 h + scale_colour_manual(values=c(m="blue", f="red"))
-    
-    
-#====================================
+```
+## 12.5.Using a Colorblind-Friendly Palette
+```{r,fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
 # Base plot
@@ -118,13 +99,11 @@ cb_palette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 # Add it to the plot
 p + scale_fill_manual(values=cb_palette)
     
-    
-#====================================
 c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00",
   "#CC79A7")
-    
-    
-#====================================
+```
+## 12.6.Using a Manually Defined Palette for a Continuous Variable
+```{r,fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
 # Base plot
@@ -143,9 +122,9 @@ p + scale_colour_gradient2(low=muted("red"), mid="white", high=muted("blue"),
 
 # A gradient of n colors
 p + scale_colour_gradientn(colours = c("darkred", "orange", "yellow", "white"))
-    
-    
-#====================================
+```
+## 12.7.Coloring a Shaded Region Based on Value
+```{r,fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
 cb <- subset(climate, Source=="Berkeley")
@@ -155,14 +134,11 @@ cb$valence[cb$Anomaly10y < 0]  <- "neg"
 
 head(cb)
 
-#====================================
 ggplot(cb, aes(x=Year, y=Anomaly10y)) +
     geom_area(aes(fill=valence)) +
     geom_line() +
     geom_hline(yintercept=0)
     
-    
-#====================================
 # approx() returns a list with x and y vectors
 interp <- approx(cb$Year, cb$Anomaly10y, n=1000)
 
@@ -171,16 +147,10 @@ cbi <- data.frame(Year=interp$x, Anomaly10y=interp$y)
 cbi$valence[cbi$Anomaly10y >= 0] <- "pos"
 cbi$valence[cbi$Anomaly10y < 0]  <- "neg"
     
-    
-#====================================
 ggplot(cbi, aes(x=Year, y=Anomaly10y)) +
     geom_area(aes(fill=valence), alpha = .4) +
     geom_line() +
     geom_hline(yintercept=0) +
     scale_fill_manual(values=c("#CCEEFF", "#FFDDDD"), guide=FALSE) +
     scale_x_continuous(expand=c(0, 0))
-    
-    
-#==================
 ```
-

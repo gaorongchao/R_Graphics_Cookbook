@@ -1,6 +1,6 @@
-chapter: Controlling the Overall Appearance of Graphs
-```{r}
-#==================
+# chapter: Controlling the Overall Appearance of Graphs
+## 9.1.Setting the Title of a Graph
+```{r.fig.width=7,fig.height=5}
 library(ggplot2)
 library(gcookbook) # For the data set
 
@@ -11,8 +11,6 @@ p + ggtitle("Age and Height of Schoolchildren")
 # Use \n for a newline
 p + ggtitle("Age and Height\nof Schoolchildren")
     
-    
-#====================================
 # Move the title inside
 p + ggtitle("Age and Height of Schoolchildren") +
     theme(plot.title=element_text(vjust = -2.5))
@@ -20,9 +18,9 @@ p + ggtitle("Age and Height of Schoolchildren") +
 # Use a text annotation instead
 p + annotate("text", x=mean(range(heightweight$ageYear)), y=Inf,
              label="Age and Height of Schoolchildren", vjust=1.5, size=6)
-    
-    
-#====================================
+```    
+## 9.2.Changing the Appearance of Text
+```{r.fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
 # Base plot
@@ -39,17 +37,15 @@ p + ggtitle("Age and Height\nof Schoolchildren") +
 # rel(1.5) means that the font will be 1.5 times the base font size of the theme.
 # For theme elements, font size is in points.
     
-    
-#====================================
 p + annotate("text", x=15, y=53, label="Some text", size = 7, family="Times",
         fontface="bold.italic", colour="red")
 
 p + geom_text(aes(label=weightLb), size=4, family="Times", colour="red")
 
 # For text geoms, font size is in mm
-    
-    
-#====================================
+```
+## 9.3.Using Themes
+```{r.fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
 # Base plot
@@ -61,12 +57,8 @@ p + theme_grey()
 # Black-and-white theme
 p + theme_bw()
     
-    
-#====================================
 p + theme_grey(base_size=16, base_family="Times")
     
-    
-#====================================
 # Set default theme for current session
 theme_set(theme_bw())
 
@@ -75,9 +67,9 @@ p
 
 # Reset the default theme back to theme_grey()
 theme_set(theme_grey())
-    
-    
-#====================================
+```    
+## 9.4.Chagning the Appearance of Theme Elements
+```{r.fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
 # Base plot
@@ -113,15 +105,14 @@ p + facet_grid(sex ~ .) + theme(
     # strip.text.x is the same, but for horizontal facets
     
     
-#====================================
 # theme() has no effect if before adding a complete theme
 p + theme(axis.title.x = element_text(colour="red")) + theme_bw()
 
 # theme() works if after a compete theme
 p + theme_bw() + theme(axis.title.x = element_text(colour="red", size=12))
-    
-    
-#====================================
+```    
+## 9.5.Creating Your Own Themes  
+```{r.fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
 # Start with theme_bw() and modify a few things
@@ -134,9 +125,9 @@ p <- ggplot(heightweight, aes(x=ageYear, y=heightIn)) + geom_point()
 
 # Plot with modified theme
 p + mytheme
-    
-    
-#====================================
+```    
+## 9.6.Hiding Grid Lines
+```{r.fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
 p <- ggplot(heightweight, aes(x=ageYear, y=heightIn)) + geom_point()
@@ -144,8 +135,6 @@ p <- ggplot(heightweight, aes(x=ageYear, y=heightIn)) + geom_point()
 p + theme(panel.grid.major = element_blank(),
           panel.grid.minor = element_blank())
     
-    
-#====================================
 # Hide the vertical grid lines (which intersect with the x-axis)
 p + theme(panel.grid.major.x = element_blank(),
           panel.grid.minor.x = element_blank())
@@ -153,7 +142,4 @@ p + theme(panel.grid.major.x = element_blank(),
 # Hide the horizontal grid lines (which intersect with the y-axis)
 p + theme(panel.grid.major.y = element_blank(),
           panel.grid.minor.y = element_blank())
-    
-    
-#==================
 ```

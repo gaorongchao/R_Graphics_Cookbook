@@ -1,6 +1,6 @@
-chapter: Facets
-```{r}
-#==================
+# chapter11: Facets
+## 11.1.Splitting Data into Subplots with Facets
+```{r,fig.width=7,fig.height=5}
 library(ggplot2)
 # The base plot
 p <- ggplot(mpg, aes(x=displ, y=hwy)) + geom_point()
@@ -14,20 +14,16 @@ p + facet_grid(. ~ cyl)
 # Split by drv (vertical) and cyl (horizontal)
 p + facet_grid(drv ~ cyl)
     
-    
-#====================================
 # Facet on class
 # Note there is nothing before the tilde
 p + facet_wrap( ~ class)
     
-    
-#====================================
 # These will have the same result: 2 rows and 4 cols
 p + facet_wrap( ~ class, nrow=2)
 p + facet_wrap( ~ class, ncol=4)
-    
-    
-#====================================
+```    
+## 11.2.Using Facets with Different Axes
+```{r,fig.width=7,fig.height=5}
 # The base plot
 p <- ggplot(mpg, aes(x=displ, y=hwy)) + geom_point()
 
@@ -36,9 +32,9 @@ p + facet_grid(drv ~ cyl, scales="free_y")
 
 # With free x and y scales
 p + facet_grid(drv ~ cyl, scales="free")
-    
-    
-#====================================
+```
+## 11.3.Changing the Text of Facet Labels  
+```{r,fig.width=7,fig.height=5}
 mpg2 <- mpg  # Make a copy of the original data
 
 # Rename 4 to 4wd, f to Front, r to Rear
@@ -49,13 +45,9 @@ levels(mpg2$drv)[levels(mpg2$drv)=="r"]  <- "Rear"
 # Plot the new data
 ggplot(mpg2, aes(x=displ, y=hwy)) + geom_point() + facet_grid(drv ~ .)
     
-    
-#====================================
 ggplot(mpg2, aes(x=displ, y=hwy)) + geom_point() +
     facet_grid(drv ~ ., labeller = label_both)
     
-    
-#====================================
 mpg3 <- mpg
 
 levels(mpg3$drv)[levels(mpg3$drv)=="4"]  <- "4^{wd}"
@@ -64,9 +56,9 @@ levels(mpg3$drv)[levels(mpg3$drv)=="r"]  <- "4^{wd} - Front"
 
 ggplot(mpg3, aes(x=displ, y=hwy)) + geom_point() +
     facet_grid(drv ~ ., labeller = label_parsed)
-    
-    
-#====================================
+```  
+## 11.4.Changing the Appearance of Facet Labels
+```{r,fig.width=7,fig.height=5}
 library(gcookbook)  # For the data set
 
 ggplot(cabbage_exp, aes(x=Cultivar, y=Weight)) + geom_bar(stat="identity") +
@@ -74,7 +66,4 @@ ggplot(cabbage_exp, aes(x=Cultivar, y=Weight)) + geom_bar(stat="identity") +
     theme(strip.text = element_text(face="bold", size=rel(1.5)),
           strip.background = element_rect(fill="lightblue", colour="black",
                                           size=1))
-    
-    
-#==================
 ```
