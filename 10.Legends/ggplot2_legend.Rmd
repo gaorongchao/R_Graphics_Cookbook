@@ -158,7 +158,7 @@ third+guides(fill=guide_legend(reverse=TRUE))
 ```
 #### order
 positive integer less that 99 that specify the order of this guide in the multiple guides. If 0 (default), the order is determined by a secret algorithm.
-不明觉历的。
+不明觉厉的。
 ```{r,fig.show="hold",fig.width=5,fig.height=3,fig.show="hold"}
 third
 third+guides(fill=guide_legend(order=5))
