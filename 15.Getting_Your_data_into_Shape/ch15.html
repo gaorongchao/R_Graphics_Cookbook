@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>chapter15: Getting Your Data into Shape</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: rgb(88, 72, 246)
+   }
+
+   pre .number {
+     color: rgb(0, 0, 205);
+   }
+
+   pre .comment {
+     color: rgb(76, 136, 107);
+   }
+
+   pre .keyword {
+     color: rgb(0, 0, 255);
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: rgb(3, 106, 7);
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+
+</head>
+
+<body>
+<h1>chapter15: Getting Your Data into Shape</h1>
+
+<pre><code class="r">library(gcookbook)  # For the data set
+head(heightweight)
+</code></pre>
+
+<pre><code>##   sex ageYear ageMonth heightIn weightLb
+## 1   f   11.92      143     56.3     85.0
+## 2   f   12.92      155     62.3    105.0
+## 3   f   12.75      153     63.3    108.0
+## 4   f   13.42      161     59.0     92.0
+## 5   f   15.92      191     62.5    112.5
+## 6   f   14.25      171     62.5    112.0
+</code></pre>
+
+<pre><code class="r">
+str(heightweight)
+</code></pre>
+
+<pre><code>## &#39;data.frame&#39;:    236 obs. of  5 variables:
+##  $ sex     : Factor w/ 2 levels &quot;f&quot;,&quot;m&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ ageYear : num  11.9 12.9 12.8 13.4 15.9 ...
+##  $ ageMonth: int  143 155 153 161 191 171 185 142 160 140 ...
+##  $ heightIn: num  56.3 62.3 63.3 59 62.5 62.5 59 56.5 62 53.8 ...
+##  $ weightLb: num  85 105 108 92 112 ...
+</code></pre>
+
+<h2>15.1.Creating a Data Frame</h2>
+
+<pre><code class="r"># Two starting vectors
+g &lt;- c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;)
+x &lt;- 1:3
+
+dat &lt;- data.frame(g, x)
+dat
+</code></pre>
+
+<pre><code>##   g x
+## 1 A 1
+## 2 B 2
+## 3 C 3
+</code></pre>
+
+<h2>15.2.Getting Information About a Data Structture</h2>
+
+<pre><code class="r">lst &lt;- list(group = g, value = x)  # A list of vectors
+
+dat &lt;- as.data.frame(lst)
+
+str(ToothGrowth)
+</code></pre>
+
+<pre><code>## &#39;data.frame&#39;:    60 obs. of  3 variables:
+##  $ len : num  4.2 11.5 7.3 5.8 6.4 10 11.2 11.2 5.2 7 ...
+##  $ supp: Factor w/ 2 levels &quot;OJ&quot;,&quot;VC&quot;: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ dose: num  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 ...
+</code></pre>
+
+<pre><code class="r">
+tg &lt;- ToothGrowth
+tg$supp &lt;- as.character(tg$supp)
+
+str(tg)
+</code></pre>
+
+<pre><code>## &#39;data.frame&#39;:    60 obs. of  3 variables:
+##  $ len : num  4.2 11.5 7.3 5.8 6.4 10 11.2 11.2 5.2 7 ...
+##  $ supp: chr  &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; ...
+##  $ dose: num  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 ...
+</code></pre>
+
+<pre><code class="r">
+# Print out the columns by themselves
+
+# From old data frame (factor)
+ToothGrowth$supp
+</code></pre>
+
+<pre><code>##  [1] VC VC VC VC VC VC VC VC VC VC VC VC VC VC VC VC VC VC VC VC VC VC VC
+## [24] VC VC VC VC VC VC VC OJ OJ OJ OJ OJ OJ OJ OJ OJ OJ OJ OJ OJ OJ OJ OJ
+## [47] OJ OJ OJ OJ OJ OJ OJ OJ OJ OJ OJ OJ OJ OJ
+## Levels: OJ VC
+</code></pre>
+
+<pre><code class="r">
+# From new data frame (character)
+tg$supp
+</code></pre>
+
+<pre><code>##  [1] &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot;
+## [15] &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot; &quot;VC&quot;
+## [29] &quot;VC&quot; &quot;VC&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot;
+## [43] &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot;
+## [57] &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot; &quot;OJ&quot;
+</code></pre>
+
+<h2>15.3.Adding a Column to a Data Frame</h2>
+
+<pre><code class="r"># data$newcol &lt;- NA
+dat$newcol &lt;- NA
+
+# data$newcol &lt;- vec
+dat$newcol &lt;- vec
+</code></pre>
+
+<pre><code>## Error: 找不到对象&#39;vec&#39;
+</code></pre>
+
+<h2>15.4.Deleting a Column from a Data Frame</h2>
+
+<pre><code class="r">data$badcol &lt;- NULL
+</code></pre>
+
+<pre><code>## Error: 类别为&#39;closure&#39;的对象不可以取子集
+</code></pre>
+
+<pre><code class="r">
+# Return data without badcol
+data &lt;- subset(data, select = -badcol)
+</code></pre>
+
+<pre><code>## Error: 缺少参数&quot;subset&quot;,也没有缺省值
+</code></pre>
+
+<pre><code class="r">
+# Exclude badcol and othercol
+data &lt;- subset(data, select = c(-badcol, -othercol))
+</code></pre>
+
+<pre><code>## Error: 缺少参数&quot;subset&quot;,也没有缺省值
+</code></pre>
+
+<h2>15.5.Renaming Columns in a Data Frame</h2>
+
+<pre><code class="r">names(dat) &lt;- c(&quot;name1&quot;, &quot;name2&quot;, &quot;name3&quot;)
+
+library(gcookbook)  # For the data set
+names(anthoming)  # Print the names of the columns
+</code></pre>
+
+<pre><code>## [1] &quot;angle&quot; &quot;expt&quot;  &quot;ctrl&quot;
+</code></pre>
+
+<pre><code class="r">
+names(anthoming)[names(anthoming) == &quot;ctrl&quot;] &lt;- c(&quot;Control&quot;)
+names(anthoming)[names(anthoming) == &quot;expt&quot;] &lt;- c(&quot;Experimental&quot;)
+names(anthoming)
+</code></pre>
+
+<pre><code>## [1] &quot;angle&quot;        &quot;Experimental&quot; &quot;Control&quot;
+</code></pre>
+
+<pre><code class="r">
+names(anthoming)[1] &lt;- &quot;Angle&quot;
+names(anthoming)
+</code></pre>
+
+<pre><code>## [1] &quot;Angle&quot;        &quot;Experimental&quot; &quot;Control&quot;
+</code></pre>
+
+<h2>15.6.Reordering Columns in a Data Frame</h2>
+
+<pre><code class="r">dat &lt;- dat[c(1, 3, 2)]
+
+dat &lt;- dat[c(&quot;col1&quot;, &quot;col3&quot;, &quot;col2&quot;)]
+</code></pre>
+
+<pre><code>## Error: undefined columns selected
+</code></pre>
+
+<pre><code class="r">
+library(gcookbook)  # For the data set
+anthoming
+</code></pre>
+
+<pre><code>##   Angle Experimental Control
+## 1   -20            1       0
+## 2   -10            7       3
+## 3     0            2       3
+## 4    10            0       3
+## 5    20            0       1
+</code></pre>
+
+<pre><code class="r">
+anthoming[c(1, 3, 2)]  # List-style indexing
+</code></pre>
+
+<pre><code>##   Angle Control Experimental
+## 1   -20       0            1
+## 2   -10       3            7
+## 3     0       3            2
+## 4    10       3            0
+## 5    20       1            0
+</code></pre>
+
+<pre><code class="r">
+# Putting nothing before the comma means to select all rows
+anthoming[, c(1, 3, 2)]  # Matrix-style indexing
+</code></pre>
+
+<pre><code>##   Angle Control Experimental
+## 1   -20       0            1
+## 2   -10       3            7
+## 3     0       3            2
+## 4    10       3            0
+## 5    20       1            0
+</code></pre>
+
+<pre><code class="r">
+anthoming[3]  # List-style indexing
+</code></pre>
+
+<pre><code>##   Control
+## 1       0
+## 2       3
+## 3       3
+## 4       3
+## 5       1
+</code></pre>
+
+<pre><code class="r">
+anthoming[, 3]  # Matrix-style indexing
+</code></pre>
+
+<pre><code>## [1] 0 3 3 3 1
+</code></pre>
+
+<pre><code class="r">
+anthoming[, 3, drop = FALSE]  # Matrix-style indexing with drop=FALSE
+</code></pre>
+
+<pre><code>##   Control
+## 1       0
+## 2       3
+## 3       3
+## 4       3
+## 5       1
+</code></pre>
+
+<h2>15.7.Getting a Subset of a Data Frame</h2>
+
+<pre><code class="r">library(gcookbook)  # For the data set
+head(climate)
+</code></pre>
+
+<pre><code>##     Source Year Anomaly1y Anomaly5y Anomaly10y Unc10y
+## 1 Berkeley 1800        NA        NA     -0.435  0.505
+## 2 Berkeley 1801        NA        NA     -0.453  0.493
+## 3 Berkeley 1802        NA        NA     -0.460  0.486
+## 4 Berkeley 1803        NA        NA     -0.493  0.489
+## 5 Berkeley 1804        NA        NA     -0.536  0.483
+## 6 Berkeley 1805        NA        NA     -0.541  0.475
+</code></pre>
+
+<pre><code class="r">
+head(subset(climate, Source == &quot;Berkeley&quot;, select = c(Year, Anomaly10y)))
+</code></pre>
+
+<pre><code>##   Year Anomaly10y
+## 1 1800     -0.435
+## 2 1801     -0.453
+## 3 1802     -0.460
+## 4 1803     -0.493
+## 5 1804     -0.536
+## 6 1805     -0.541
+</code></pre>
+
+<pre><code class="r">
+head(subset(climate, Source == &quot;Berkeley&quot; &amp; Year &gt;= 1900 &amp; Year &lt;= 2000, select = c(Year, 
+    Anomaly10y)))
+</code></pre>
+
+<pre><code>##     Year Anomaly10y
+## 101 1900     -0.171
+## 102 1901     -0.162
+## 103 1902     -0.177
+## 104 1903     -0.199
+## 105 1904     -0.223
+## 106 1905     -0.241
+</code></pre>
+
+<pre><code class="r">
+head(climate[climate$Source == &quot;Berkeley&quot; &amp; climate$Year &gt;= 1900 &amp; climate$Year &lt;= 
+    2000, c(&quot;Year&quot;, &quot;Anomaly10y&quot;)])
+</code></pre>
+
+<pre><code>##     Year Anomaly10y
+## 101 1900     -0.171
+## 102 1901     -0.162
+## 103 1902     -0.177
+## 104 1903     -0.199
+## 105 1904     -0.223
+## 106 1905     -0.241
+</code></pre>
+
+<pre><code class="r">
+
+head(climate[climate$Source == &quot;Berkeley&quot; &amp; climate$Year &gt;= 1900 &amp; climate$Year &lt;= 
+    2000, c(&quot;Year&quot;, &quot;Anomaly10y&quot;), drop = FALSE])
+</code></pre>
+
+<pre><code>##     Year Anomaly10y
+## 101 1900     -0.171
+## 102 1901     -0.162
+## 103 1902     -0.177
+## 104 1903     -0.199
+## 105 1904     -0.223
+## 106 1905     -0.241
+</code></pre>
+
+<pre><code class="r">
+
+head(climate[1:100, c(2, 5)])
+</code></pre>
+
+<pre><code>##   Year Anomaly10y
+## 1 1800     -0.435
+## 2 1801     -0.453
+## 3 1802     -0.460
+## 4 1803     -0.493
+## 5 1804     -0.536
+## 6 1805     -0.541
+</code></pre>
+
+<h2>15.8.Changing the Order of Factor Levels</h2>
+
+<pre><code class="r"># By default, levels are ordered alphabetically
+sizes &lt;- factor(c(&quot;small&quot;, &quot;large&quot;, &quot;large&quot;, &quot;small&quot;, &quot;medium&quot;))
+sizes
+</code></pre>
+
+<pre><code>## [1] small  large  large  small  medium
+## Levels: large medium small
+</code></pre>
+
+<pre><code class="r">
+# Change the order of levels
+sizes &lt;- factor(sizes, levels = c(&quot;small&quot;, &quot;medium&quot;, &quot;large&quot;))
+sizes
+</code></pre>
+
+<pre><code>## [1] small  large  large  small  medium
+## Levels: small medium large
+</code></pre>
+
+<pre><code class="r">
+factor(sizes, levels = rev(levels(sizes)))
+</code></pre>
+
+<pre><code>## [1] small  large  large  small  medium
+## Levels: large medium small
+</code></pre>
+
+<h2>15.9.Changing the Order of Factor Levels Based on Data Values</h2>
+
+<pre><code class="r"># Make a copy since we&#39;ll modify it
+iss &lt;- InsectSprays
+iss$spray
+</code></pre>
+
+<pre><code>##  [1] A A A A A A A A A A A A B B B B B B B B B B B B C C C C C C C C C C C
+## [36] C D D D D D D D D D D D D E E E E E E E E E E E E F F F F F F F F F F
+## [71] F F
+## Levels: A B C D E F
+</code></pre>
+
+<pre><code class="r">
+iss$spray &lt;- reorder(iss$spray, iss$count, FUN = mean)
+iss$spray
+</code></pre>
+
+<pre><code>##  [1] A A A A A A A A A A A A B B B B B B B B B B B B C C C C C C C C C C C
+## [36] C D D D D D D D D D D D D E E E E E E E E E E E E F F F F F F F F F F
+## [71] F F
+## attr(,&quot;scores&quot;)
+##      A      B      C      D      E      F 
+## 14.500 15.333  2.083  4.917  3.500 16.667 
+## Levels: C E D A B F
+</code></pre>
+
+<pre><code class="r">
+attr(, &quot;scores&quot;)
+</code></pre>
+
+<pre><code>## Error: 1元素是空的
+</code></pre>
+
+<h2>15.10.Changing the Names of Factor Levels</h2>
+
+<pre><code class="r">sizes &lt;- factor(c(&quot;small&quot;, &quot;large&quot;, &quot;large&quot;, &quot;small&quot;, &quot;medium&quot;))
+sizes
+</code></pre>
+
+<pre><code>## [1] small  large  large  small  medium
+## Levels: large medium small
+</code></pre>
+
+<pre><code class="r">
+levels(sizes)
+</code></pre>
+
+<pre><code>## [1] &quot;large&quot;  &quot;medium&quot; &quot;small&quot;
+</code></pre>
+
+<pre><code class="r">
+# With revalue(), pass it a named vector with the mappings
+sizes1 &lt;- revalue(sizes, c(small = &quot;S&quot;, medium = &quot;M&quot;, large = &quot;L&quot;))
+</code></pre>
+
+<pre><code>## Error: 没有&quot;revalue&quot;这个函数
+</code></pre>
+
+<pre><code class="r">sizes1
+</code></pre>
+
+<pre><code>## Error: 找不到对象&#39;sizes1&#39;
+</code></pre>
+
+<pre><code class="r">
+# Can also use quotes -- useful if there are spaces or other strange
+# characters
+revalue(sizes, c(small = &quot;S&quot;, medium = &quot;M&quot;, large = &quot;L&quot;))
+</code></pre>
+
+<pre><code>## Error: 没有&quot;revalue&quot;这个函数
+</code></pre>
+
+<pre><code class="r">
+# mapvalues() lets you use two separate vectors instead of a named vector
+mapvalues(sizes, c(&quot;small&quot;, &quot;medium&quot;, &quot;large&quot;), c(&quot;S&quot;, &quot;M&quot;, &quot;L&quot;))
+</code></pre>
+
+<pre><code>## Error: 没有&quot;mapvalues&quot;这个函数
+</code></pre>
+
+<pre><code class="r">
+sizes &lt;- factor(c(&quot;small&quot;, &quot;large&quot;, &quot;large&quot;, &quot;small&quot;, &quot;medium&quot;))
+
+# Index into the levels and rename each one
+levels(sizes)[levels(sizes) == &quot;large&quot;] &lt;- &quot;L&quot;
+levels(sizes)[levels(sizes) == &quot;medium&quot;] &lt;- &quot;M&quot;
+levels(sizes)[levels(sizes) == &quot;small&quot;] &lt;- &quot;S&quot;
+sizes
+</code></pre>
+
+<pre><code>## [1] S L L S M
+## Levels: L M S
+</code></pre>
+
+<pre><code class="r">
+sizes &lt;- factor(c(&quot;small&quot;, &quot;large&quot;, &quot;large&quot;, &quot;small&quot;, &quot;medium&quot;))
+levels(sizes) &lt;- list(S = &quot;small&quot;, M = &quot;medium&quot;, L = &quot;large&quot;)
+sizes
+</code></pre>
+
+<pre><code>## [1] S L L S M
+## Levels: S M L
+</code></pre>
+
+<pre><code class="r">
+# By default, levels are ordered alphabetically
+sizes &lt;- factor(c(&quot;small&quot;, &quot;large&quot;, &quot;large&quot;, &quot;small&quot;, &quot;medium&quot;))
+
+levels(sizes)[1] &lt;- &quot;L&quot;
+sizes
+</code></pre>
+
+<pre><code>## [1] small  L      L      small  medium
+## Levels: L medium small
+</code></pre>
+
+<pre><code class="r">
+# Rename all levels at once
+levels(sizes) &lt;- c(&quot;L&quot;, &quot;M&quot;, &quot;S&quot;)
+sizes
+</code></pre>
+
+<pre><code>## [1] S L L S M
+## Levels: L M S
+</code></pre>
+
+<h2>15.11.Removing Unused Levels from a Factor</h2>
+
+<pre><code class="r">sizes &lt;- factor(c(&quot;small&quot;, &quot;large&quot;, &quot;large&quot;, &quot;small&quot;, &quot;medium&quot;))
+sizes &lt;- sizes[1:3]
+sizes
+</code></pre>
+
+<pre><code>## [1] small large large
+## Levels: large medium small
+</code></pre>
+
+<pre><code class="r">
+sizes &lt;- droplevels(sizes)
+sizes
+</code></pre>
+
+<pre><code>## [1] small large large
+## Levels: large small
+</code></pre>
+
+<h2>15.12.Changing the Names of Items in a Character Vector</h2>
+
+<pre><code class="r">sizes &lt;- c(&quot;small&quot;, &quot;large&quot;, &quot;large&quot;, &quot;small&quot;, &quot;medium&quot;)
+sizes
+</code></pre>
+
+<pre><code>## [1] &quot;small&quot;  &quot;large&quot;  &quot;large&quot;  &quot;small&quot;  &quot;medium&quot;
+</code></pre>
+
+<pre><code class="r">
+# With revalue(), pass it a named vector with the mappings
+sizes1 &lt;- revalue(sizes, c(small = &quot;S&quot;, medium = &quot;M&quot;, large = &quot;L&quot;))
+</code></pre>
+
+<pre><code>## Error: 没有&quot;revalue&quot;这个函数
+</code></pre>
+
+<pre><code class="r">sizes1
+</code></pre>
+
+<pre><code>## Error: 找不到对象&#39;sizes1&#39;
+</code></pre>
+
+<pre><code class="r">
+# Can also use quotes -- useful if there are spaces or other strange
+# characters
+revalue(sizes, c(small = &quot;S&quot;, medium = &quot;M&quot;, large = &quot;L&quot;))
+</code></pre>
+
+<pre><code>## Error: 没有&quot;revalue&quot;这个函数
+</code></pre>
+
+<pre><code class="r">
+# mapvalues() lets you use two separate vectors instead of a named vector
+mapvalues(sizes, c(&quot;small&quot;, &quot;medium&quot;, &quot;large&quot;), c(&quot;S&quot;, &quot;M&quot;, &quot;L&quot;))
+</code></pre>
+
+<pre><code>## Error: 没有&quot;mapvalues&quot;这个函数
+</code></pre>
+
+<pre><code class="r">
+sizes &lt;- c(&quot;small&quot;, &quot;large&quot;, &quot;large&quot;, &quot;small&quot;, &quot;medium&quot;)
+sizes
+</code></pre>
+
+<pre><code>## [1] &quot;small&quot;  &quot;large&quot;  &quot;large&quot;  &quot;small&quot;  &quot;medium&quot;
+</code></pre>
+
+<pre><code class="r">
+sizes[sizes == &quot;small&quot;] &lt;- &quot;S&quot;
+sizes[sizes == &quot;medium&quot;] &lt;- &quot;M&quot;
+sizes[sizes == &quot;large&quot;] &lt;- &quot;L&quot;
+
+sizes
+</code></pre>
+
+<pre><code>## [1] &quot;S&quot; &quot;L&quot; &quot;L&quot; &quot;S&quot; &quot;M&quot;
+</code></pre>
+
+<h2>15.13.Recoding a Categorical Variable to Another Categorical Variable</h2>
+
+<pre><code class="r"># Work on a subset of the PlantGrowth data set
+pg &lt;- PlantGrowth[c(1, 2, 11, 21, 22), ]
+pg
+</code></pre>
+
+<pre><code>##    weight group
+## 1    4.17  ctrl
+## 2    5.58  ctrl
+## 11   4.81  trt1
+## 21   6.31  trt2
+## 22   5.12  trt2
+</code></pre>
+
+<pre><code class="r">
+pg &lt;- PlantGrowth
+
+oldvals &lt;- c(&quot;ctrl&quot;, &quot;trt1&quot;, &quot;trt2&quot;)
+newvals &lt;- factor(c(&quot;No&quot;, &quot;Yes&quot;, &quot;Yes&quot;))
+
+pg$treatment &lt;- newvals[match(pg$group, oldvals)]
+
+pg$treatment[pg$group == &quot;ctrl&quot;] &lt;- &quot;no&quot;
+</code></pre>
+
+<pre><code>## Warning: invalid factor level, NA generated
+</code></pre>
+
+<pre><code class="r">pg$treatment[pg$group == &quot;trt1&quot;] &lt;- &quot;yes&quot;
+</code></pre>
+
+<pre><code>## Warning: invalid factor level, NA generated
+</code></pre>
+
+<pre><code class="r">pg$treatment[pg$group == &quot;trt2&quot;] &lt;- &quot;yes&quot;
+</code></pre>
+
+<pre><code>## Warning: invalid factor level, NA generated
+</code></pre>
+
+<pre><code class="r">
+# Convert to a factor
+pg$treatment &lt;- factor(pg$treatment)
+pg
+</code></pre>
+
+<pre><code>##    weight group treatment
+## 1    4.17  ctrl      &lt;NA&gt;
+## 2    5.58  ctrl      &lt;NA&gt;
+## 3    5.18  ctrl      &lt;NA&gt;
+## 4    6.11  ctrl      &lt;NA&gt;
+## 5    4.50  ctrl      &lt;NA&gt;
+## 6    4.61  ctrl      &lt;NA&gt;
+## 7    5.17  ctrl      &lt;NA&gt;
+## 8    4.53  ctrl      &lt;NA&gt;
+## 9    5.33  ctrl      &lt;NA&gt;
+## 10   5.14  ctrl      &lt;NA&gt;
+## 11   4.81  trt1      &lt;NA&gt;
+## 12   4.17  trt1      &lt;NA&gt;
+## 13   4.41  trt1      &lt;NA&gt;
+## 14   3.59  trt1      &lt;NA&gt;
+## 15   5.87  trt1      &lt;NA&gt;
+## 16   3.83  trt1      &lt;NA&gt;
+## 17   6.03  trt1      &lt;NA&gt;
+## 18   4.89  trt1      &lt;NA&gt;
+## 19   4.32  trt1      &lt;NA&gt;
+## 20   4.69  trt1      &lt;NA&gt;
+## 21   6.31  trt2      &lt;NA&gt;
+## 22   5.12  trt2      &lt;NA&gt;
+## 23   5.54  trt2      &lt;NA&gt;
+## 24   5.50  trt2      &lt;NA&gt;
+## 25   5.37  trt2      &lt;NA&gt;
+## 26   5.29  trt2      &lt;NA&gt;
+## 27   4.92  trt2      &lt;NA&gt;
+## 28   6.15  trt2      &lt;NA&gt;
+## 29   5.80  trt2      &lt;NA&gt;
+## 30   5.26  trt2      &lt;NA&gt;
+</code></pre>
+
+<pre><code class="r">
+pg$newcol[pg$group == &quot;ctrl&quot; &amp; pg$weight &lt; 5] &lt;- &quot;no_small&quot;
+pg$newcol[pg$group == &quot;ctrl&quot; &amp; pg$weight &gt;= 5] &lt;- &quot;no_large&quot;
+pg$newcol[pg$group == &quot;trt1&quot;] &lt;- &quot;yes&quot;
+pg$newcol[pg$group == &quot;trt2&quot;] &lt;- &quot;yes&quot;
+
+pg$newcol &lt;- factor(pg$newcol)
+pg
+</code></pre>
+
+<pre><code>##    weight group treatment   newcol
+## 1    4.17  ctrl      &lt;NA&gt; no_small
+## 2    5.58  ctrl      &lt;NA&gt; no_large
+## 3    5.18  ctrl      &lt;NA&gt; no_large
+## 4    6.11  ctrl      &lt;NA&gt; no_large
+## 5    4.50  ctrl      &lt;NA&gt; no_small
+## 6    4.61  ctrl      &lt;NA&gt; no_small
+## 7    5.17  ctrl      &lt;NA&gt; no_large
+## 8    4.53  ctrl      &lt;NA&gt; no_small
+## 9    5.33  ctrl      &lt;NA&gt; no_large
+## 10   5.14  ctrl      &lt;NA&gt; no_large
+## 11   4.81  trt1      &lt;NA&gt;      yes
+## 12   4.17  trt1      &lt;NA&gt;      yes
+## 13   4.41  trt1      &lt;NA&gt;      yes
+## 14   3.59  trt1      &lt;NA&gt;      yes
+## 15   5.87  trt1      &lt;NA&gt;      yes
+## 16   3.83  trt1      &lt;NA&gt;      yes
+## 17   6.03  trt1      &lt;NA&gt;      yes
+## 18   4.89  trt1      &lt;NA&gt;      yes
+## 19   4.32  trt1      &lt;NA&gt;      yes
+## 20   4.69  trt1      &lt;NA&gt;      yes
+## 21   6.31  trt2      &lt;NA&gt;      yes
+## 22   5.12  trt2      &lt;NA&gt;      yes
+## 23   5.54  trt2      &lt;NA&gt;      yes
+## 24   5.50  trt2      &lt;NA&gt;      yes
+## 25   5.37  trt2      &lt;NA&gt;      yes
+## 26   5.29  trt2      &lt;NA&gt;      yes
+## 27   4.92  trt2      &lt;NA&gt;      yes
+## 28   6.15  trt2      &lt;NA&gt;      yes
+## 29   5.80  trt2      &lt;NA&gt;      yes
+## 30   5.26  trt2      &lt;NA&gt;      yes
+</code></pre>
+
+<pre><code class="r">
+pg$weighttrt &lt;- interaction(pg$weightcat, pg$treatment)
+</code></pre>
+
+<pre><code>## Error: 替换数据里有0行，但数据有30
+</code></pre>
+
+<pre><code class="r">pg
+</code></pre>
+
+<pre><code>##    weight group treatment   newcol
+## 1    4.17  ctrl      &lt;NA&gt; no_small
+## 2    5.58  ctrl      &lt;NA&gt; no_large
+## 3    5.18  ctrl      &lt;NA&gt; no_large
+## 4    6.11  ctrl      &lt;NA&gt; no_large
+## 5    4.50  ctrl      &lt;NA&gt; no_small
+## 6    4.61  ctrl      &lt;NA&gt; no_small
+## 7    5.17  ctrl      &lt;NA&gt; no_large
+## 8    4.53  ctrl      &lt;NA&gt; no_small
+## 9    5.33  ctrl      &lt;NA&gt; no_large
+## 10   5.14  ctrl      &lt;NA&gt; no_large
+## 11   4.81  trt1      &lt;NA&gt;      yes
+## 12   4.17  trt1      &lt;NA&gt;      yes
+## 13   4.41  trt1      &lt;NA&gt;      yes
+## 14   3.59  trt1      &lt;NA&gt;      yes
+## 15   5.87  trt1      &lt;NA&gt;      yes
+## 16   3.83  trt1      &lt;NA&gt;      yes
+## 17   6.03  trt1      &lt;NA&gt;      yes
+## 18   4.89  trt1      &lt;NA&gt;      yes
+## 19   4.32  trt1      &lt;NA&gt;      yes
+## 20   4.69  trt1      &lt;NA&gt;      yes
+## 21   6.31  trt2      &lt;NA&gt;      yes
+## 22   5.12  trt2      &lt;NA&gt;      yes
+## 23   5.54  trt2      &lt;NA&gt;      yes
+## 24   5.50  trt2      &lt;NA&gt;      yes
+## 25   5.37  trt2      &lt;NA&gt;      yes
+## 26   5.29  trt2      &lt;NA&gt;      yes
+## 27   4.92  trt2      &lt;NA&gt;      yes
+## 28   6.15  trt2      &lt;NA&gt;      yes
+## 29   5.80  trt2      &lt;NA&gt;      yes
+## 30   5.26  trt2      &lt;NA&gt;      yes
+</code></pre>
+
+<h2>15.14.Recoding a Continuous Variable to a Categorical Variable</h2>
+
+<pre><code class="r"># Work on a subset of the PlantGrowth data set
+pg &lt;- PlantGrowth[c(1, 2, 11, 21, 22), ]
+pg
+</code></pre>
+
+<pre><code>##    weight group
+## 1    4.17  ctrl
+## 2    5.58  ctrl
+## 11   4.81  trt1
+## 21   6.31  trt2
+## 22   5.12  trt2
+</code></pre>
+
+<pre><code class="r">
+pg$wtclass &lt;- cut(pg$weight, breaks = c(0, 5, 6, Inf))
+pg
+</code></pre>
+
+<pre><code>##    weight group wtclass
+## 1    4.17  ctrl   (0,5]
+## 2    5.58  ctrl   (5,6]
+## 11   4.81  trt1   (0,5]
+## 21   6.31  trt2 (6,Inf]
+## 22   5.12  trt2   (5,6]
+</code></pre>
+
+<pre><code class="r">
+pg$wtclass &lt;- cut(pg$weight, breaks = c(0, 5, 6, Inf), labels = c(&quot;small&quot;, &quot;medium&quot;, 
+    &quot;large&quot;))
+pg
+</code></pre>
+
+<pre><code>##    weight group wtclass
+## 1    4.17  ctrl   small
+## 2    5.58  ctrl  medium
+## 11   4.81  trt1   small
+## 21   6.31  trt2   large
+## 22   5.12  trt2  medium
+</code></pre>
+
+<pre><code class="r">
+cut(pg$weight, breaks = c(0, 5, 6, Inf), right = FALSE)
+</code></pre>
+
+<pre><code>## [1] [0,5)   [5,6)   [0,5)   [6,Inf) [5,6)  
+## Levels: [0,5) [5,6) [6,Inf)
+</code></pre>
+
+<h2>15.15.Transforming Variables</h2>
+
+<pre><code class="r">library(gcookbook)  # For the data set
+# Make a copy of the data
+hw &lt;- heightweight
+head(hw)
+</code></pre>
+
+<pre><code>##   sex ageYear ageMonth heightIn weightLb
+## 1   f   11.92      143     56.3     85.0
+## 2   f   12.92      155     62.3    105.0
+## 3   f   12.75      153     63.3    108.0
+## 4   f   13.42      161     59.0     92.0
+## 5   f   15.92      191     62.5    112.5
+## 6   f   14.25      171     62.5    112.0
+</code></pre>
+
+<pre><code class="r">
+hw$heightCm &lt;- hw$heightIn * 2.54
+head(hw)
+</code></pre>
+
+<pre><code>##   sex ageYear ageMonth heightIn weightLb heightCm
+## 1   f   11.92      143     56.3     85.0    143.0
+## 2   f   12.92      155     62.3    105.0    158.2
+## 3   f   12.75      153     63.3    108.0    160.8
+## 4   f   13.42      161     59.0     92.0    149.9
+## 5   f   15.92      191     62.5    112.5    158.8
+## 6   f   14.25      171     62.5    112.0    158.8
+</code></pre>
+
+<pre><code class="r">
+hw &lt;- transform(hw, heightCm = heightIn * 2.54, weightKg = weightLb/2.204)
+library(plyr)
+hw &lt;- mutate(hw, heightCm = heightIn * 2.54, weightKg = weightLb/2.204)
+head(hw)
+</code></pre>
+
+<pre><code>##   sex ageYear ageMonth heightIn weightLb heightCm weightKg
+## 1   f   11.92      143     56.3     85.0    143.0    38.57
+## 2   f   12.92      155     62.3    105.0    158.2    47.64
+## 3   f   12.75      153     63.3    108.0    160.8    49.00
+## 4   f   13.42      161     59.0     92.0    149.9    41.74
+## 5   f   15.92      191     62.5    112.5    158.8    51.04
+## 6   f   14.25      171     62.5    112.0    158.8    50.82
+</code></pre>
+
+<pre><code class="r">
+# These all have the same effect:
+hw &lt;- transform(hw, bmi = weightKg/(heightCm/100)^2)
+hw &lt;- mutate(hw, bmi = weightKg/(heightCm/100)^2)
+hw$bmi &lt;- hw$weightKg/(hw$heightCm/100)^2
+head(hw)
+</code></pre>
+
+<pre><code>##   sex ageYear ageMonth heightIn weightLb heightCm weightKg   bmi
+## 1   f   11.92      143     56.3     85.0    143.0    38.57 18.86
+## 2   f   12.92      155     62.3    105.0    158.2    47.64 19.03
+## 3   f   12.75      153     63.3    108.0    160.8    49.00 18.96
+## 4   f   13.42      161     59.0     92.0    149.9    41.74 18.59
+## 5   f   15.92      191     62.5    112.5    158.8    51.04 20.25
+## 6   f   14.25      171     62.5    112.0    158.8    50.82 20.16
+</code></pre>
+
+<pre><code class="r">
+hw &lt;- heightweight
+hw &lt;- mutate(hw, heightCm = heightIn * 2.54, weightKg = weightLb/2.204, bmi = weightKg/(heightCm/100)^2)
+</code></pre>
+
+<h2>15.16.Transforming variables by Group</h2>
+
+<pre><code class="r">library(MASS)  # For the data set
+library(plyr)
+cb &lt;- ddply(cabbages, &quot;Cult&quot;, transform, DevWt = HeadWt - mean(HeadWt))
+
+cabbages
+</code></pre>
+
+<pre><code>##    Cult Date HeadWt VitC
+## 1   c39  d16    2.5   51
+## 2   c39  d16    2.2   55
+## 3   c39  d16    3.1   45
+## 4   c39  d16    4.3   42
+## 5   c39  d16    2.5   53
+## 6   c39  d16    4.3   50
+## 7   c39  d16    3.8   50
+## 8   c39  d16    4.3   52
+## 9   c39  d16    1.7   56
+## 10  c39  d16    3.1   49
+## 11  c39  d20    3.0   65
+## 12  c39  d20    2.8   52
+## 13  c39  d20    2.8   41
+## 14  c39  d20    2.7   51
+## 15  c39  d20    2.6   41
+## 16  c39  d20    2.8   45
+## 17  c39  d20    2.6   51
+## 18  c39  d20    2.6   45
+## 19  c39  d20    2.6   61
+## 20  c39  d20    3.5   42
+## 21  c39  d21    2.2   54
+## 22  c39  d21    1.8   59
+## 23  c39  d21    1.6   66
+## 24  c39  d21    2.1   54
+## 25  c39  d21    3.3   45
+## 26  c39  d21    3.8   49
+## 27  c39  d21    3.2   49
+## 28  c39  d21    3.6   55
+## 29  c39  d21    4.2   49
+## 30  c39  d21    1.6   68
+## 31  c52  d16    2.0   58
+## 32  c52  d16    2.4   55
+## 33  c52  d16    1.9   67
+## 34  c52  d16    2.8   61
+## 35  c52  d16    1.7   67
+## 36  c52  d16    3.2   68
+## 37  c52  d16    2.0   58
+## 38  c52  d16    2.2   63
+## 39  c52  d16    2.2   56
+## 40  c52  d16    2.2   72
+## 41  c52  d20    4.0   52
+## 42  c52  d20    2.8   70
+## 43  c52  d20    3.1   57
+## 44  c52  d20    4.2   58
+## 45  c52  d20    3.7   47
+## 46  c52  d20    3.0   56
+## 47  c52  d20    2.2   72
+## 48  c52  d20    2.3   63
+## 49  c52  d20    3.8   54
+## 50  c52  d20    2.0   60
+## 51  c52  d21    1.5   78
+## 52  c52  d21    1.4   75
+## 53  c52  d21    1.7   70
+## 54  c52  d21    1.3   84
+## 55  c52  d21    1.7   71
+## 56  c52  d21    1.6   72
+## 57  c52  d21    1.4   62
+## 58  c52  d21    1.0   68
+## 59  c52  d21    1.5   66
+## 60  c52  d21    1.6   72
+</code></pre>
+
+<pre><code class="r">
+transform(cabbages, DevWt = HeadWt - mean(HeadWt))
+</code></pre>
+
+<pre><code>##    Cult Date HeadWt VitC     DevWt
+## 1   c39  d16    2.5   51 -0.093333
+## 2   c39  d16    2.2   55 -0.393333
+## 3   c39  d16    3.1   45  0.506667
+## 4   c39  d16    4.3   42  1.706667
+## 5   c39  d16    2.5   53 -0.093333
+## 6   c39  d16    4.3   50  1.706667
+## 7   c39  d16    3.8   50  1.206667
+## 8   c39  d16    4.3   52  1.706667
+## 9   c39  d16    1.7   56 -0.893333
+## 10  c39  d16    3.1   49  0.506667
+## 11  c39  d20    3.0   65  0.406667
+## 12  c39  d20    2.8   52  0.206667
+## 13  c39  d20    2.8   41  0.206667
+## 14  c39  d20    2.7   51  0.106667
+## 15  c39  d20    2.6   41  0.006667
+## 16  c39  d20    2.8   45  0.206667
+## 17  c39  d20    2.6   51  0.006667
+## 18  c39  d20    2.6   45  0.006667
+## 19  c39  d20    2.6   61  0.006667
+## 20  c39  d20    3.5   42  0.906667
+## 21  c39  d21    2.2   54 -0.393333
+## 22  c39  d21    1.8   59 -0.793333
+## 23  c39  d21    1.6   66 -0.993333
+## 24  c39  d21    2.1   54 -0.493333
+## 25  c39  d21    3.3   45  0.706667
+## 26  c39  d21    3.8   49  1.206667
+## 27  c39  d21    3.2   49  0.606667
+## 28  c39  d21    3.6   55  1.006667
+## 29  c39  d21    4.2   49  1.606667
+## 30  c39  d21    1.6   68 -0.993333
+## 31  c52  d16    2.0   58 -0.593333
+## 32  c52  d16    2.4   55 -0.193333
+## 33  c52  d16    1.9   67 -0.693333
+## 34  c52  d16    2.8   61  0.206667
+## 35  c52  d16    1.7   67 -0.893333
+## 36  c52  d16    3.2   68  0.606667
+## 37  c52  d16    2.0   58 -0.593333
+## 38  c52  d16    2.2   63 -0.393333
+## 39  c52  d16    2.2   56 -0.393333
+## 40  c52  d16    2.2   72 -0.393333
+## 41  c52  d20    4.0   52  1.406667
+## 42  c52  d20    2.8   70  0.206667
+## 43  c52  d20    3.1   57  0.506667
+## 44  c52  d20    4.2   58  1.606667
+## 45  c52  d20    3.7   47  1.106667
+## 46  c52  d20    3.0   56  0.406667
+## 47  c52  d20    2.2   72 -0.393333
+## 48  c52  d20    2.3   63 -0.293333
+## 49  c52  d20    3.8   54  1.206667
+## 50  c52  d20    2.0   60 -0.593333
+## 51  c52  d21    1.5   78 -1.093333
+## 52  c52  d21    1.4   75 -1.193333
+## 53  c52  d21    1.7   70 -0.893333
+## 54  c52  d21    1.3   84 -1.293333
+## 55  c52  d21    1.7   71 -0.893333
+## 56  c52  d21    1.6   72 -0.993333
+## 57  c52  d21    1.4   62 -1.193333
+## 58  c52  d21    1.0   68 -1.593333
+## 59  c52  d21    1.5   66 -1.093333
+## 60  c52  d21    1.6   72 -0.993333
+</code></pre>
+
+<pre><code class="r">
+library(plyr)
+cb &lt;- ddply(cabbages, &quot;Cult&quot;, transform, DevWt = HeadWt - mean(HeadWt))
+cb
+</code></pre>
+
+<pre><code>##    Cult Date HeadWt VitC    DevWt
+## 1   c39  d16    2.5   51 -0.40667
+## 2   c39  d16    2.2   55 -0.70667
+## 3   c39  d16    3.1   45  0.19333
+## 4   c39  d16    4.3   42  1.39333
+## 5   c39  d16    2.5   53 -0.40667
+## 6   c39  d16    4.3   50  1.39333
+## 7   c39  d16    3.8   50  0.89333
+## 8   c39  d16    4.3   52  1.39333
+## 9   c39  d16    1.7   56 -1.20667
+## 10  c39  d16    3.1   49  0.19333
+## 11  c39  d20    3.0   65  0.09333
+## 12  c39  d20    2.8   52 -0.10667
+## 13  c39  d20    2.8   41 -0.10667
+## 14  c39  d20    2.7   51 -0.20667
+## 15  c39  d20    2.6   41 -0.30667
+## 16  c39  d20    2.8   45 -0.10667
+## 17  c39  d20    2.6   51 -0.30667
+## 18  c39  d20    2.6   45 -0.30667
+## 19  c39  d20    2.6   61 -0.30667
+## 20  c39  d20    3.5   42  0.59333
+## 21  c39  d21    2.2   54 -0.70667
+## 22  c39  d21    1.8   59 -1.10667
+## 23  c39  d21    1.6   66 -1.30667
+## 24  c39  d21    2.1   54 -0.80667
+## 25  c39  d21    3.3   45  0.39333
+## 26  c39  d21    3.8   49  0.89333
+## 27  c39  d21    3.2   49  0.29333
+## 28  c39  d21    3.6   55  0.69333
+## 29  c39  d21    4.2   49  1.29333
+## 30  c39  d21    1.6   68 -1.30667
+## 31  c52  d16    2.0   58 -0.28000
+## 32  c52  d16    2.4   55  0.12000
+## 33  c52  d16    1.9   67 -0.38000
+## 34  c52  d16    2.8   61  0.52000
+## 35  c52  d16    1.7   67 -0.58000
+## 36  c52  d16    3.2   68  0.92000
+## 37  c52  d16    2.0   58 -0.28000
+## 38  c52  d16    2.2   63 -0.08000
+## 39  c52  d16    2.2   56 -0.08000
+## 40  c52  d16    2.2   72 -0.08000
+## 41  c52  d20    4.0   52  1.72000
+## 42  c52  d20    2.8   70  0.52000
+## 43  c52  d20    3.1   57  0.82000
+## 44  c52  d20    4.2   58  1.92000
+## 45  c52  d20    3.7   47  1.42000
+## 46  c52  d20    3.0   56  0.72000
+## 47  c52  d20    2.2   72 -0.08000
+## 48  c52  d20    2.3   63  0.02000
+## 49  c52  d20    3.8   54  1.52000
+## 50  c52  d20    2.0   60 -0.28000
+## 51  c52  d21    1.5   78 -0.78000
+## 52  c52  d21    1.4   75 -0.88000
+## 53  c52  d21    1.7   70 -0.58000
+## 54  c52  d21    1.3   84 -0.98000
+## 55  c52  d21    1.7   71 -0.58000
+## 56  c52  d21    1.6   72 -0.68000
+## 57  c52  d21    1.4   62 -0.88000
+## 58  c52  d21    1.0   68 -1.28000
+## 59  c52  d21    1.5   66 -0.78000
+## 60  c52  d21    1.6   72 -0.68000
+</code></pre>
+
+<pre><code class="r">
+# The data before normalizing
+ggplot(cb, aes(x = Cult, y = HeadWt)) + geom_boxplot()
+</code></pre>
+
+<pre><code>## Error: 没有&quot;ggplot&quot;这个函数
+</code></pre>
+
+<pre><code class="r">
+# After normalizing
+ggplot(cb, aes(x = Cult, y = DevWt)) + geom_boxplot()
+</code></pre>
+
+<pre><code>## Error: 没有&quot;ggplot&quot;这个函数
+</code></pre>
+
+<pre><code class="r">
+
+ddply(cabbages, c(&quot;Cult&quot;, &quot;Date&quot;), transform, DevWt = HeadWt - mean(HeadWt), 
+    DevVitC = VitC - mean(VitC))
+</code></pre>
+
+<pre><code>##    Cult Date HeadWt VitC DevWt DevVitC
+## 1   c39  d16    2.5   51 -0.68     0.7
+## 2   c39  d16    2.2   55 -0.98     4.7
+## 3   c39  d16    3.1   45 -0.08    -5.3
+## 4   c39  d16    4.3   42  1.12    -8.3
+## 5   c39  d16    2.5   53 -0.68     2.7
+## 6   c39  d16    4.3   50  1.12    -0.3
+## 7   c39  d16    3.8   50  0.62    -0.3
+## 8   c39  d16    4.3   52  1.12     1.7
+## 9   c39  d16    1.7   56 -1.48     5.7
+## 10  c39  d16    3.1   49 -0.08    -1.3
+## 11  c39  d20    3.0   65  0.20    15.6
+## 12  c39  d20    2.8   52  0.00     2.6
+## 13  c39  d20    2.8   41  0.00    -8.4
+## 14  c39  d20    2.7   51 -0.10     1.6
+## 15  c39  d20    2.6   41 -0.20    -8.4
+## 16  c39  d20    2.8   45  0.00    -4.4
+## 17  c39  d20    2.6   51 -0.20     1.6
+## 18  c39  d20    2.6   45 -0.20    -4.4
+## 19  c39  d20    2.6   61 -0.20    11.6
+## 20  c39  d20    3.5   42  0.70    -7.4
+## 21  c39  d21    2.2   54 -0.54    -0.8
+## 22  c39  d21    1.8   59 -0.94     4.2
+## 23  c39  d21    1.6   66 -1.14    11.2
+## 24  c39  d21    2.1   54 -0.64    -0.8
+## 25  c39  d21    3.3   45  0.56    -9.8
+## 26  c39  d21    3.8   49  1.06    -5.8
+## 27  c39  d21    3.2   49  0.46    -5.8
+## 28  c39  d21    3.6   55  0.86     0.2
+## 29  c39  d21    4.2   49  1.46    -5.8
+## 30  c39  d21    1.6   68 -1.14    13.2
+## 31  c52  d16    2.0   58 -0.26    -4.5
+## 32  c52  d16    2.4   55  0.14    -7.5
+## 33  c52  d16    1.9   67 -0.36     4.5
+## 34  c52  d16    2.8   61  0.54    -1.5
+## 35  c52  d16    1.7   67 -0.56     4.5
+## 36  c52  d16    3.2   68  0.94     5.5
+## 37  c52  d16    2.0   58 -0.26    -4.5
+## 38  c52  d16    2.2   63 -0.06     0.5
+## 39  c52  d16    2.2   56 -0.06    -6.5
+## 40  c52  d16    2.2   72 -0.06     9.5
+## 41  c52  d20    4.0   52  0.89    -6.9
+## 42  c52  d20    2.8   70 -0.31    11.1
+## 43  c52  d20    3.1   57 -0.01    -1.9
+## 44  c52  d20    4.2   58  1.09    -0.9
+## 45  c52  d20    3.7   47  0.59   -11.9
+## 46  c52  d20    3.0   56 -0.11    -2.9
+## 47  c52  d20    2.2   72 -0.91    13.1
+## 48  c52  d20    2.3   63 -0.81     4.1
+## 49  c52  d20    3.8   54  0.69    -4.9
+## 50  c52  d20    2.0   60 -1.11     1.1
+## 51  c52  d21    1.5   78  0.03     6.2
+## 52  c52  d21    1.4   75 -0.07     3.2
+## 53  c52  d21    1.7   70  0.23    -1.8
+## 54  c52  d21    1.3   84 -0.17    12.2
+## 55  c52  d21    1.7   71  0.23    -0.8
+## 56  c52  d21    1.6   72  0.13     0.2
+## 57  c52  d21    1.4   62 -0.07    -9.8
+## 58  c52  d21    1.0   68 -0.47    -3.8
+## 59  c52  d21    1.5   66  0.03    -5.8
+## 60  c52  d21    1.6   72  0.13     0.2
+</code></pre>
+
+<h2>15.17.Summarizing Data by Groups</h2>
+
+<pre><code class="r">library(MASS)  # For the data set
+library(plyr)
+
+ddply(cabbages, c(&quot;Cult&quot;, &quot;Date&quot;), summarise, Weight = mean(HeadWt), VitC = mean(VitC))
+</code></pre>
+
+<pre><code>##   Cult Date Weight VitC
+## 1  c39  d16   3.18 50.3
+## 2  c39  d20   2.80 49.4
+## 3  c39  d21   2.74 54.8
+## 4  c52  d16   2.26 62.5
+## 5  c52  d20   3.11 58.9
+## 6  c52  d21   1.47 71.8
+</code></pre>
+
+<pre><code class="r">
+head(cabbages)
+</code></pre>
+
+<pre><code>##   Cult Date HeadWt VitC
+## 1  c39  d16    2.5   51
+## 2  c39  d16    2.2   55
+## 3  c39  d16    3.1   45
+## 4  c39  d16    4.3   42
+## 5  c39  d16    2.5   53
+## 6  c39  d16    4.3   50
+</code></pre>
+
+<pre><code class="r">
+library(plyr)
+summarise(cabbages, Weight = mean(HeadWt))
+</code></pre>
+
+<pre><code>##   Weight
+## 1  2.593
+</code></pre>
+
+<pre><code class="r">
+library(plyr)
+ddply(cabbages, &quot;Cult&quot;, summarise, Weight = mean(HeadWt))
+</code></pre>
+
+<pre><code>##   Cult Weight
+## 1  c39  2.907
+## 2  c52  2.280
+</code></pre>
+
+<pre><code class="r">
+ddply(cabbages, c(&quot;Cult&quot;, &quot;Date&quot;), summarise, Weight = mean(HeadWt), VitC = mean(VitC))
+</code></pre>
+
+<pre><code>##   Cult Date Weight VitC
+## 1  c39  d16   3.18 50.3
+## 2  c39  d20   2.80 49.4
+## 3  c39  d21   2.74 54.8
+## 4  c52  d16   2.26 62.5
+## 5  c52  d20   3.11 58.9
+## 6  c52  d21   1.47 71.8
+</code></pre>
+
+<pre><code class="r">
+ddply(cabbages, c(&quot;Cult&quot;, &quot;Date&quot;), summarise, Weight = mean(HeadWt), sd = sd(HeadWt), 
+    n = length(HeadWt))
+</code></pre>
+
+<pre><code>##   Cult Date Weight     sd  n
+## 1  c39  d16   3.18 0.9566 10
+## 2  c39  d20   2.80 0.2789 10
+## 3  c39  d21   2.74 0.9834 10
+## 4  c52  d16   2.26 0.4452 10
+## 5  c52  d20   3.11 0.7909 10
+## 6  c52  d21   1.47 0.2111 10
+</code></pre>
+
+<pre><code class="r">
+c1 &lt;- cabbages  # Make a copy
+c1$HeadWt[c(1, 20, 45)] &lt;- NA  # Set some values to NA
+
+ddply(c1, c(&quot;Cult&quot;, &quot;Date&quot;), summarise, Weight = mean(HeadWt), sd = sd(HeadWt), 
+    n = length(HeadWt))
+</code></pre>
+
+<pre><code>##   Cult Date Weight     sd  n
+## 1  c39  d16     NA     NA 10
+## 2  c39  d20     NA     NA 10
+## 3  c39  d21   2.74 0.9834 10
+## 4  c52  d16   2.26 0.4452 10
+## 5  c52  d20     NA     NA 10
+## 6  c52  d21   1.47 0.2111 10
+</code></pre>
+
+<pre><code class="r">
+ddply(c1, c(&quot;Cult&quot;, &quot;Date&quot;), summarise, Weight = mean(HeadWt, na.rm = TRUE), 
+    sd = sd(HeadWt, na.rm = TRUE), n = sum(!is.na(HeadWt)))
+</code></pre>
+
+<pre><code>##   Cult Date Weight     sd  n
+## 1  c39  d16  3.256 0.9825  9
+## 2  c39  d20  2.722 0.1394  9
+## 3  c39  d21  2.740 0.9834 10
+## 4  c52  d16  2.260 0.4452 10
+## 5  c52  d20  3.044 0.8095  9
+## 6  c52  d21  1.470 0.2111 10
+</code></pre>
+
+<pre><code class="r">
+# Copy cabbages and remove all rows with both c52 and d21
+c2 &lt;- subset(c1, !(Cult == &quot;c52&quot; &amp; Date == &quot;d21&quot;))
+
+c2a &lt;- ddply(c2, c(&quot;Cult&quot;, &quot;Date&quot;), summarise, Weight = mean(HeadWt, na.rm = TRUE), 
+    sd = sd(HeadWt, na.rm = TRUE), n = sum(!is.na(HeadWt)))
+c2a
+</code></pre>
+
+<pre><code>##   Cult Date Weight     sd  n
+## 1  c39  d16  3.256 0.9825  9
+## 2  c39  d20  2.722 0.1394  9
+## 3  c39  d21  2.740 0.9834 10
+## 4  c52  d16  2.260 0.4452 10
+## 5  c52  d20  3.044 0.8095  9
+</code></pre>
+
+<pre><code class="r">
+# Make the graph
+ggplot(c2a, aes(x = Date, fill = Cult, y = Weight)) + geom_bar(position = &quot;dodge&quot;)
+</code></pre>
+
+<pre><code>## Error: 没有&quot;ggplot&quot;这个函数
+</code></pre>
+
+<pre><code class="r">
+
+c2b &lt;- ddply(c2, c(&quot;Cult&quot;, &quot;Date&quot;), .drop = FALSE, summarise, Weight = mean(HeadWt, 
+    na.rm = TRUE), sd = sd(HeadWt, na.rm = TRUE), n = sum(!is.na(HeadWt)))
+c2b
+</code></pre>
+
+<pre><code>##   Cult Date Weight     sd  n
+## 1  c39  d16  3.256 0.9825  9
+## 2  c39  d20  2.722 0.1394  9
+## 3  c39  d21  2.740 0.9834 10
+## 4  c52  d16  2.260 0.4452 10
+## 5  c52  d20  3.044 0.8095  9
+## 6  c52  d21    NaN     NA  0
+</code></pre>
+
+<pre><code class="r">
+# Make the graph
+ggplot(c2b, aes(x = Date, fill = Cult, y = Weight)) + geom_bar(position = &quot;dodge&quot;)
+</code></pre>
+
+<pre><code>## Error: 没有&quot;ggplot&quot;这个函数
+</code></pre>
+
+<h2>15.18.Summarizing Data with Standard Errors and Confidence Intervals</h2>
+
+<pre><code class="r">library(MASS)  # For the data set
+library(plyr)
+
+ca &lt;- ddply(cabbages, c(&quot;Cult&quot;, &quot;Date&quot;), summarise, Weight = mean(HeadWt, na.rm = TRUE), 
+    sd = sd(HeadWt, na.rm = TRUE), n = sum(!is.na(HeadWt)), se = sd/sqrt(n))
+
+ca
+</code></pre>
+
+<pre><code>##   Cult Date Weight     sd  n      se
+## 1  c39  d16   3.18 0.9566 10 0.30251
+## 2  c39  d20   2.80 0.2789 10 0.08819
+## 3  c39  d21   2.74 0.9834 10 0.31098
+## 4  c52  d16   2.26 0.4452 10 0.14079
+## 5  c52  d20   3.11 0.7909 10 0.25009
+## 6  c52  d21   1.47 0.2111 10 0.06675
+</code></pre>
+
+<pre><code class="r">
+ddply(cabbages, c(&quot;Cult&quot;, &quot;Date&quot;), summarise, Weight = mean(HeadWt, na.rm = TRUE), 
+    sd = sd(HeadWt, na.rm = TRUE), n = sum(!is.na(HeadWt)), se = sd/sqrt(n))
+</code></pre>
+
+<pre><code>##   Cult Date Weight     sd  n      se
+## 1  c39  d16   3.18 0.9566 10 0.30251
+## 2  c39  d20   2.80 0.2789 10 0.08819
+## 3  c39  d21   2.74 0.9834 10 0.31098
+## 4  c52  d16   2.26 0.4452 10 0.14079
+## 5  c52  d20   3.11 0.7909 10 0.25009
+## 6  c52  d21   1.47 0.2111 10 0.06675
+</code></pre>
+
+<pre><code class="r">
+
+ciMult &lt;- qt(0.975, ca$n - 1)
+ciMult
+</code></pre>
+
+<pre><code>## [1] 2.262 2.262 2.262 2.262 2.262 2.262
+</code></pre>
+
+<pre><code class="r">
+ca$ci &lt;- ca$se * ciMult
+
+ca$ci95 &lt;- ca$se * qt(0.975, ca$n)
+
+
+summarySE &lt;- function(data = NULL, measurevar, groupvars = NULL, conf.interval = 0.95, 
+    na.rm = FALSE, .drop = TRUE) {
+    require(plyr)
+
+    # New version of length that can handle NAs: if na.rm==T, don&#39;t count them
+    length2 &lt;- function(x, na.rm = FALSE) {
+        if (na.rm) 
+            sum(!is.na(x)) else length(x)
+    }
+
+    # This does the summary
+    datac &lt;- ddply(data, groupvars, .drop = .drop, .fun = function(xx, col, 
+        na.rm) {
+        c(n = length2(xx[, col], na.rm = na.rm), mean = mean(xx[, col], na.rm = na.rm), 
+            sd = sd(xx[, col], na.rm = na.rm))
+    }, measurevar, na.rm)
+
+    # Rename the &#39;mean&#39; column
+    datac &lt;- rename(datac, c(mean = measurevar))
+
+    datac$se &lt;- datac$sd/sqrt(datac$n)  # Calculate standard error of the mean
+
+    # Confidence interval multiplier for standard error Calculate t-statistic
+    # for confidence interval: e.g., if conf.interval is .95, use .975
+    # (above/below), and use df=n-1, or if n==0, use df=0
+    ciMult &lt;- qt(conf.interval/2 + 0.5, datac$n - 1)
+    datac$ci &lt;- datac$se * ciMult
+
+    return(datac)
+}
+
+# Remove all rows with both c52 and d21
+c2 &lt;- subset(cabbages, !(Cult == &quot;c52&quot; &amp; Date == &quot;d21&quot;))
+
+# Set some values to NA
+c2$HeadWt[c(1, 20, 45)] &lt;- NA
+
+
+summarySE(c2, &quot;HeadWt&quot;, c(&quot;Cult&quot;, &quot;Date&quot;), conf.interval = 0.99, na.rm = TRUE, 
+    .drop = FALSE)
+</code></pre>
+
+<pre><code>## Warning: 产生了NaNs
+</code></pre>
+
+<pre><code>##   Cult Date  n HeadWt     sd      se     ci
+## 1  c39  d16  9  3.256 0.9825 0.32750 1.0989
+## 2  c39  d20  9  2.722 0.1394 0.04648 0.1560
+## 3  c39  d21 10  2.740 0.9834 0.31098 1.0106
+## 4  c52  d16 10  2.260 0.4452 0.14079 0.4575
+## 5  c52  d20  9  3.044 0.8095 0.26983 0.9054
+## 6  c52  d21  0    NaN     NA      NA     NA
+</code></pre>
+
+<h2>15.19.Converting Data from Wide to Long</h2>
+
+<pre><code class="r">library(gcookbook)  # For the data set
+anthoming
+</code></pre>
+
+<pre><code>##   Angle Experimental Control
+## 1   -20            1       0
+## 2   -10            7       3
+## 3     0            2       3
+## 4    10            0       3
+## 5    20            0       1
+</code></pre>
+
+<pre><code class="r">
+library(reshape2)
+melt(anthoming, id.vars = &quot;angle&quot;, variable.name = &quot;condition&quot;, value.name = &quot;count&quot;)
+</code></pre>
+
+<pre><code>## Error: id variables not found in data: angle
+</code></pre>
+
+<pre><code class="r">
+drunk
+</code></pre>
+
+<pre><code>##      sex 0-29 30-39 40-49 50-59 60+
+## 1   male  185   207   260   180  71
+## 2 female    4    13    10     7  10
+</code></pre>
+
+<pre><code class="r">
+melt(drunk, id.vars = &quot;sex&quot;, measure.vars = c(&quot;0-29&quot;, &quot;30-39&quot;), variable.name = &quot;age&quot;, 
+    value.name = &quot;count&quot;)
+</code></pre>
+
+<pre><code>##      sex   age count
+## 1   male  0-29   185
+## 2 female  0-29     4
+## 3   male 30-39   207
+## 4 female 30-39    13
+</code></pre>
+
+<pre><code class="r">
+plum_wide
+</code></pre>
+
+<pre><code>##   length      time dead alive
+## 1   long   at_once   84   156
+## 2   long in_spring  156    84
+## 3  short   at_once  133   107
+## 4  short in_spring  209    31
+</code></pre>
+
+<pre><code class="r">
+melt(plum_wide, id.vars = c(&quot;length&quot;, &quot;time&quot;), variable.name = &quot;survival&quot;, value.name = &quot;count&quot;)
+</code></pre>
+
+<pre><code>##   length      time survival count
+## 1   long   at_once     dead    84
+## 2   long in_spring     dead   156
+## 3  short   at_once     dead   133
+## 4  short in_spring     dead   209
+## 5   long   at_once    alive   156
+## 6   long in_spring    alive    84
+## 7  short   at_once    alive   107
+## 8  short in_spring    alive    31
+</code></pre>
+
+<pre><code class="r">
+# Make a copy of the data
+co &lt;- corneas
+co
+</code></pre>
+
+<pre><code>##   affected notaffected
+## 1      488         484
+## 2      478         478
+## 3      480         492
+## 4      426         444
+## 5      440         436
+## 6      410         398
+## 7      458         464
+## 8      460         476
+</code></pre>
+
+<pre><code class="r">
+# Add an ID column
+co$id &lt;- 1:nrow(co)
+
+melt(co, id.vars = &quot;id&quot;, variable.name = &quot;eye&quot;, value.name = &quot;thickness&quot;)
+</code></pre>
+
+<pre><code>##    id         eye thickness
+## 1   1    affected       488
+## 2   2    affected       478
+## 3   3    affected       480
+## 4   4    affected       426
+## 5   5    affected       440
+## 6   6    affected       410
+## 7   7    affected       458
+## 8   8    affected       460
+## 9   1 notaffected       484
+## 10  2 notaffected       478
+## 11  3 notaffected       492
+## 12  4 notaffected       444
+## 13  5 notaffected       436
+## 14  6 notaffected       398
+## 15  7 notaffected       464
+## 16  8 notaffected       476
+</code></pre>
+
+<h2>15.20.Converting Data from Long to Wide</h2>
+
+<pre><code class="r">library(gcookbook)  # For the data set
+plum
+</code></pre>
+
+<pre><code>##   length      time survival count
+## 1   long   at_once     dead    84
+## 2   long in_spring     dead   156
+## 3  short   at_once     dead   133
+## 4  short in_spring     dead   209
+## 5   long   at_once    alive   156
+## 6   long in_spring    alive    84
+## 7  short   at_once    alive   107
+## 8  short in_spring    alive    31
+</code></pre>
+
+<pre><code class="r">
+library(reshape2)
+dcast(plum, length + time ~ survival, value.var = &quot;count&quot;)
+</code></pre>
+
+<pre><code>##   length      time dead alive
+## 1   long   at_once   84   156
+## 2   long in_spring  156    84
+## 3  short   at_once  133   107
+## 4  short in_spring  209    31
+</code></pre>
+
+<pre><code class="r">
+dcast(plum, time ~ length + survival, value.var = &quot;count&quot;)
+</code></pre>
+
+<pre><code>##        time long_dead long_alive short_dead short_alive
+## 1   at_once        84        156        133         107
+## 2 in_spring       156         84        209          31
+</code></pre>
+
+<h2>15.21.Converting a Time Series Object to Times</h2>
+
+<pre><code class="r"># Look at nhtemp Time Series object
+nhtemp
+</code></pre>
+
+<pre><code>## Time Series:
+## Start = 1912 
+## End = 1971 
+## Frequency = 1 
+##  [1] 49.9 52.3 49.4 51.1 49.4 47.9 49.8 50.9 49.3 51.9 50.8 49.6 49.3 50.6
+## [15] 48.4 50.7 50.9 50.6 51.5 52.8 51.8 51.1 49.8 50.2 50.4 51.6 51.8 50.9
+## [29] 48.8 51.7 51.0 50.6 51.7 51.5 52.1 51.3 51.0 54.0 51.4 52.7 53.1 54.6
+## [43] 52.0 52.0 50.9 52.6 50.2 52.6 51.6 51.9 50.5 50.9 51.7 51.4 51.7 50.8
+## [57] 51.9 51.8 51.9 53.0
+</code></pre>
+
+<pre><code class="r">
+# Get times for each observation
+as.numeric(time(nhtemp))
+</code></pre>
+
+<pre><code>##  [1] 1912 1913 1914 1915 1916 1917 1918 1919 1920 1921 1922 1923 1924 1925
+## [15] 1926 1927 1928 1929 1930 1931 1932 1933 1934 1935 1936 1937 1938 1939
+## [29] 1940 1941 1942 1943 1944 1945 1946 1947 1948 1949 1950 1951 1952 1953
+## [43] 1954 1955 1956 1957 1958 1959 1960 1961 1962 1963 1964 1965 1966 1967
+## [57] 1968 1969 1970 1971
+</code></pre>
+
+<pre><code class="r">
+# Get value of each observation
+as.numeric(nhtemp)
+</code></pre>
+
+<pre><code>##  [1] 49.9 52.3 49.4 51.1 49.4 47.9 49.8 50.9 49.3 51.9 50.8 49.6 49.3 50.6
+## [15] 48.4 50.7 50.9 50.6 51.5 52.8 51.8 51.1 49.8 50.2 50.4 51.6 51.8 50.9
+## [29] 48.8 51.7 51.0 50.6 51.7 51.5 52.1 51.3 51.0 54.0 51.4 52.7 53.1 54.6
+## [43] 52.0 52.0 50.9 52.6 50.2 52.6 51.6 51.9 50.5 50.9 51.7 51.4 51.7 50.8
+## [57] 51.9 51.8 51.9 53.0
+</code></pre>
+
+<pre><code class="r">
+# Put them in a data frame
+nht &lt;- data.frame(year = as.numeric(time(nhtemp)), temp = as.numeric(nhtemp))
+head(nht)
+</code></pre>
+
+<pre><code>##   year temp
+## 1 1912 49.9
+## 2 1913 52.3
+## 3 1914 49.4
+## 4 1915 51.1
+## 5 1916 49.4
+## 6 1917 47.9
+</code></pre>
+
+<pre><code class="r">
+head(presidents)
+</code></pre>
+
+<pre><code>## [1] NA 87 82 75 63 50
+</code></pre>
+
+<pre><code class="r">
+pres_rating &lt;- data.frame(year = as.numeric(time(presidents)), rating = as.numeric(presidents))
+head(pres_rating)
+</code></pre>
+
+<pre><code>##   year rating
+## 1 1945     NA
+## 2 1945     87
+## 3 1946     82
+## 4 1946     75
+## 5 1946     63
+## 6 1946     50
+</code></pre>
+
+<pre><code class="r">
+pres_rating2 &lt;- data.frame(year = as.numeric(floor(time(presidents))), quarter = as.numeric(cycle(presidents)), 
+    rating = as.numeric(presidents))
+head(pres_rating2)
+</code></pre>
+
+<pre><code>##   year quarter rating
+## 1 1945       1     NA
+## 2 1945       2     87
+## 3 1945       3     82
+## 4 1945       4     75
+## 5 1946       1     63
+## 6 1946       2     50
+</code></pre>
+
+</body>
+
+</html>
+
