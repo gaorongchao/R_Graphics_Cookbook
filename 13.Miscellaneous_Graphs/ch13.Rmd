@@ -1,54 +1,45 @@
-chapter: Miscellaneous Graphs
-```{r}
-#==================
+# chapter13: Miscellaneous Graphs
+## 13.1.Making a Correlation Matrix
+```{r,fig.width=7,fig.height=5}
 library(ggplot2)
 head(mtcars)
 
-#===================================
 mcor <- cor(mtcars)
 
 # Print mcor and round to 2 digits
 round(mcor, digits=2)
 
-#====================================
 #install.packages("corrplot")
 library(corrplot)
 
 corrplot(mcor)
     
-    
-#====================================
 corrplot(mcor, method="shade", shade.col=NA, tl.col="black", tl.srt=45)
     
     
-#====================================
 # Generate a lighter palette
 col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
 
 corrplot(mcor, method="shade", shade.col=NA, tl.col="black", tl.srt=45,
          col=col(200), addCoef.col="black", addcolorlabel="no", order="AOE")
-    
-    
-#====================================
+```    
+## 13.2.Plotting a Functioon
+```{r,fig.width=7,fig.height=5}
 # The data frame is only used for setting the range
 p <- ggplot(data.frame(x=c(-3,3)), aes(x=x))
 
 p + stat_function(fun = dnorm)
     
-    
-#====================================
 p + stat_function(fun=dt, args=list(df=2))
     
-    
-#====================================
 myfun <- function(xvar) {
     1/(1 + exp(-xvar + 10))
 }
 
 ggplot(data.frame(x=c(0, 20)), aes(x=x)) + stat_function(fun=myfun)
-    
-    
-#====================================
+```  
+## 13.3.Shading a Subregion Under a Function Curve
+```{r,fig.width=7,fig.height=5}
 # Return dnorm(x) for 0 < x < 2, and NA for all other x
 dnorm_limit <- function(x) {
     y <- dnorm(x)
@@ -62,8 +53,6 @@ p <- ggplot(data.frame(x=c(-3, 3)), aes(x=x))
 p + stat_function(fun=dnorm_limit, geom="area", fill="blue", alpha=0.2) +
     stat_function(fun=dnorm)
     
-    
-#====================================
 limitRange <- function(fun, min, max) {
     function(x) {
         y <- fun(x)
@@ -72,8 +61,6 @@ limitRange <- function(fun, min, max) {
     }
 }
     
-    
-#====================================
 # This returns a function
 dlimit <- limitRange(dnorm, 0, 2)
 
@@ -81,17 +68,12 @@ dlimit <- limitRange(dnorm, 0, 2)
 # between 0 and 2
 dlimit(-2:4)
 
- #[1]         NA         NA 0.39894228 0.24197072 0.05399097         NA         NA
-
-    
-    
-#====================================
 p + stat_function(fun = dnorm) +
     stat_function(fun = limitRange(dnorm, 0, 2),
                   geom="area", fill="blue", alpha=0.2)
-    
-    
-#====================================
+```    
+## 13.4.Creating a Network Graph  
+```{r,fig.width=7,fig.height=5}
 # May need to install first, with install.packages("igraph")
 #install.packages("igraph")
 library(igraph)
@@ -105,30 +87,15 @@ gu <- graph(c(1,2, 2,3, 2,4, 1,4, 5,5, 3,6), directed=FALSE)
 # No labels
 plot(gu, vertex.label=NA)
     
-    
-#====================================
 str(gd)
-
-#IGRAPH D--- 6 6 -- 
-#+ edges:
-#[1] 1->2 2->3 2->4 1->4 5->5 3->6
 
 str(gu)
 
-#IGRAPH U--- 6 6 -- 
-#+ edges:
-#[1] 1--2 2--3 2--4 1--4 5--5 3--6
-    
-    
-#====================================
 set.seed(229)
 plot(gu)
     
-    
-#====================================
 library(gcookbook) # For the data set
 head(madmen2)
-
 
 # Create a graph object from the data set
 g <- graph.data.frame(madmen2, directed=TRUE)
@@ -139,15 +106,12 @@ par(mar=c(0,0,0,0))
 plot(g, layout=layout.fruchterman.reingold, vertex.size=8, edge.arrow.size=0.5,
      vertex.label=NA)
 
-    
-    
-#====================================
 g <- graph.data.frame(madmen, directed=FALSE)
 par(mar=c(0,0,0,0))  # Remove unnecessary margins
 plot(g, layout=layout.circle, vertex.size=8, vertex.label=NA)
-    
-    
-#====================================
+```    
+## 13.5.Using Text Labels in a Network Graph    
+```{r,fig.width=7,fig.height=5}
 library(igraph)
 library(gcookbook) # For the data set
 # Copy madmen and drop every other row
@@ -165,9 +129,6 @@ plot(g, layout=layout.fruchterman.reingold,
      vertex.label.dist  = 0.4,        # Offset the labels
      vertex.label.color = "black")
 
-    
-    
-#====================================
 # This is equivalent to the preceding code
 V(g)$size        <- 4
 V(g)$label       <- V(g)$name
@@ -181,7 +142,6 @@ g$layout <- layout.fruchterman.reingold
 plot(g)
     
     
-#====================================
 # View the edges
 E(g)
 
@@ -193,34 +153,20 @@ E(g)$color             <- "grey70"
 E(g)[c(2,11,19)]$color <- "red"
 
 plot(g)
-
-    
-    
-#====================================
-presidents
-
-     #Qtr1 Qtr2 Qtr3 Qtr4
-#1945   NA   87   82   75
-#1946   63   50   43   32
- #...
-#1973   68   44   40   27
-#1974   28   25   24   24
+```
+## 13.6.Creating a Heat Map    
+```{r,fig.width=7,fig.height=5}
+head(presidents)
 
 str(presidents)
 
-#Time-Series [1:120] from 1945 to 1975: NA 87 82 75 63 50 43 32 35 60 ...
-    
-    
-#====================================
 pres_rating <- data.frame(
     rating  = as.numeric(presidents),
     year    = as.numeric(floor(time(presidents))),
     quarter = as.numeric(cycle(presidents))
 )
-
 head(pres_rating)
 
-#====================================
 # Base plot
 p <- ggplot(pres_rating, aes(x=year, y=quarter, fill=rating))
 
@@ -230,21 +176,19 @@ p + geom_tile()
 # Using geom_raster() - looks the same, but a little more efficient
 p + geom_raster()
     
-    
-#====================================
 p + geom_tile() +
     scale_x_continuous(breaks = seq(1940, 1976, by = 4)) +
     scale_y_reverse() +
     scale_fill_gradient2(midpoint=50, mid="grey70", limits=c(0,100))
     
-    
-#====================================
+```
+
+## 13.7.Creating a Three-Dimensional Scatter Plot    
+```{r,fig.width=7,fig.height=5}
 # You may need to install first, with install.packages("rgl")
 library(rgl)
 plot3d(mtcars$wt, mtcars$disp, mtcars$mpg, type="s", size=0.75, lit=FALSE)
     
-    
-#====================================
 # Function to interleave the elements of two vectors
 interleave <- function(v1, v2)  as.vector(rbind(v1,v2))
 
@@ -260,7 +204,6 @@ segments3d(interleave(mtcars$wt,   mtcars$wt),
            alpha=0.4, col="blue")
     
     
-#====================================
 # Make plot without axis ticks or labels
 plot3d(mtcars$wt, mtcars$disp, mtcars$mpg,
        xlab = "", ylab = "", zlab = "",
@@ -289,9 +232,9 @@ axes3d(edges=c("x--", "y+-", "z--"),
 mtext3d("Weight",       edge="x--", line=2)
 mtext3d("Displacement", edge="y+-", line=3)
 mtext3d("MPG",          edge="z--", line=3)
-    
-    
-#====================================
+```    
+## 13.8.Adding a Prediction Surface to a Three-Dimensional Plot  
+```{r,fig.width=7,fig.height=5}
 # Given a model, predict zvar from xvar and yvar
 # Defaults to range of x and y variables, and a 16x16 grid
 predictgrid <- function(model, xvar, yvar, zvar, res = 16, type = NULL) {
@@ -328,7 +271,6 @@ df2mat <- function(p, xvar = NULL, yvar = NULL, zvar = NULL) {
 interleave <- function(v1, v2)  as.vector(rbind(v1,v2))
     
     
-#====================================
 #install.packages("rgl")
 library(rgl)
 
@@ -362,7 +304,6 @@ surface3d(mpgrid_list$wt, mpgrid_list$disp, mpgrid_list$mpg,
           alpha=0.4, front="lines", back="lines")
     
     
-#====================================
 plot3d(mtcars$wt, mtcars$disp, mtcars$mpg,
        xlab = "", ylab = "", zlab = "",
        axes = FALSE,
@@ -398,22 +339,20 @@ axes3d(edges=c("x--", "y+-", "z--"),
 mtext3d("Weight",       edge="x--", line=2)
 mtext3d("Displacement", edge="y+-", line=3)
 mtext3d("MPG",          edge="z--", line=3)
-    
-    
-#====================================
+```    
+## 13.9.Saving a Three-Dimensional Plot  
+```{r,fig.width=7,fig.height=5}
 library(rgl)
 plot3d(mtcars$wt, mtcars$disp, mtcars$mpg, type="s", size=0.75, lit=FALSE)
 
 rgl.snapshot('3dplot.png', fmt='png')
     
     
-#====================================
 rgl.postscript('figs/miscgraph/3dplot.pdf', fmt='pdf')
 
 rgl.postscript('figs/miscgraph/3dplot.ps', fmt='ps')
     
     
-#====================================
 # Save the current viewpoint
 view <- par3d("userMatrix")
 
@@ -421,7 +360,6 @@ view <- par3d("userMatrix")
 par3d(userMatrix = view)
     
     
-#====================================
 dput(view)
 
 structure(c(0.907931625843048, 0.267511069774628, -0.322642296552658,
@@ -431,33 +369,28 @@ structure(c(0.907931625843048, 0.267511069774628, -0.322642296552658,
 
     
     
-#====================================
 view <- structure(c(0.907931625843048, 0.267511069774628, -0.322642296552658,
 0, -0.410978674888611, 0.417272746562958, -0.810543060302734,
 0, -0.0821993798017502, 0.868516683578491, 0.488796472549438,
 0, 0, 0, 0, 1), .Dim = c(4L, 4L))
 
 par3d(userMatrix = view)
-    
-    
-#====================================
+```    
+## 13.10.Animating a Three-Dimensional Plot    
+```{r,fig.width=7,fig.height=5}
 library(rgl)
 plot3d(mtcars$wt, mtcars$disp, mtcars$mpg, type="s", size=0.75, lit=FALSE)
 
 play3d(spin3d())
     
-    
-#====================================
 # Spin on x-axis, at 4 rpm, for 20 seconds
 play3d(spin3d(axis=c(1,0,0), rpm=4), duration=20)
     
-    
-#====================================
 # Spin on z axis, at 4 rpm, for 15 seconds
 movie3d(spin3d(axis=c(0,0,1), rpm=4), duration=15, fps=50)
-    
-    
-#====================================
+```
+## 13.11.Creating a Dendrogram
+```{r,fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
 # Get data from year 2009
@@ -473,23 +406,15 @@ c2 <- c2[sample(1:nrow(c2), 25), ]
 
 c2
 
-#====================================
 rownames(c2) <- c2$Name
 c2 <- c2[,4:7]
 c2
 
-#====================================
 c3 <- scale(c2)
 c3
 
-
 attr(,"scaled:scale")
-         #GDP    laborrate    healthexp infmortality
-#15607.852864     9.225523  1651.056974    28.363384
 
-    
-    
-#====================================
 hc <- hclust(dist(c3))
 
 # Make the dendrogram
@@ -497,13 +422,12 @@ plot(hc)
 
 # With text aligned
 plot(hc, hang = -1)
-    
-    
-#====================================
+```
+## 13.12.Creating a Vector Field
+```{r,fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 head(isabel)
 
-#====================================
 islice <- subset(isabel, z == min(z))
 
 ggplot(islice, aes(x=x, y=y)) +
@@ -529,7 +453,6 @@ keepy <- every_n(unique(isabel$y), by=4)
 islicesub <- subset(islice, x %in% keepx  &  y %in% keepy)
     
     
-#====================================
 # Need to load grid for arrow() function
 library(grid)
 
@@ -539,7 +462,6 @@ ggplot(islicesub, aes(x=x, y=y)) +
                  arrow = arrow(length = unit(0.1, "cm")), size = 0.25)
     
     
-#====================================
 # The existing 'speed' column includes the z component. We'll calculate
 # speedxy, the horizontal speed.
 islicesub$speedxy <- sqrt(islicesub$vx^2 + islicesub$vy^2)
@@ -550,7 +472,6 @@ ggplot(islicesub, aes(x=x, y=y)) +
                  arrow = arrow(length = unit(0.1,"cm")), size = 0.6)
     
     
-#====================================
 # Get USA map data
 usa <- map_data("usa")
 
@@ -563,7 +484,6 @@ ggplot(islicesub, aes(x=x, y=y)) +
     coord_cartesian(xlim = range(islicesub$x), ylim = range(islicesub$y))
     
     
-#====================================
 # Keep 1 out of every 5 values in x and y, and 1 in 2 values in z
 keepx <- every_n(unique(isabel$x), by=5)
 keepy <- every_n(unique(isabel$y), by=5)
@@ -576,9 +496,9 @@ ggplot(isub, aes(x=x, y=y)) +
                  arrow = arrow(length = unit(0.1,"cm")), size = 0.5) +
     scale_colour_continuous(low="grey80", high="darkred") +
     facet_wrap( ~ z)
-    
-    
-#====================================
+```    
+## 13.13.Creating a QQ Plot  
+```{r,fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
 # QQ plot of height
@@ -588,9 +508,9 @@ qqline(heightweight$heightIn)
 # QQ plot of age
 qqnorm(heightweight$ageYear)
 qqline(heightweight$ageYear)
-    
-    
-#====================================
+```    
+## 13.14.Creating a Graph of an Empirical Cumulative Distribution Function  
+```{r,fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
 # ecdf of heightIn
@@ -598,63 +518,27 @@ ggplot(heightweight, aes(x=heightIn)) + stat_ecdf()
 
 # ecdf of ageYear
 ggplot(heightweight, aes(x=ageYear)) + stat_ecdf()
-    
-    
-#====================================
+```    
+## 13.15.Creating a Mosaic Plot  
+```{r,fig.width=7,fig.height=5}
 UCBAdmissions
-
-#, , Dept = A
-
-          #Gender
-#Admit      Male Female
-  #Admitted  512     89
-  #Rejected  313     19
-
- #... [four other Depts]
-
-#, , Dept = F
-#
-          #Gender
-#Admit      Male Female
-  #Admitted   22     24
-  #Rejected  351    317
 
 # Print a "flat" contingency table
 ftable(UCBAdmissions)
 
-                #Dept   A   B   C   D   E   F
-#Admit    Gender
-#Admitted Male        512 353 120 138  53  22
-         #Female       89  17 202 131  94  24
-#Rejected Male        313 207 205 279 138 351
-         #Female       19   8 391 244 299 317
-
 dimnames(UCBAdmissions)
 
-#$Admit
-#[1] "Admitted" "Rejected"
-
-#$Gender
-#[1] "Male"   "Female"
-
-#$Dept
-#[1] "A" "B" "C" "D" "E" "F"
-    
-    
-#====================================
 # You may need to install first, with install.packages("vcd")
 library(vcd)
 # Split by Admit, then Gender, then Dept
 mosaic( ~ Admit + Gender + Dept, data=UCBAdmissions)
     
     
-#====================================
 mosaic( ~ Dept + Gender + Admit, data=UCBAdmissions,
     highlighting="Admit", highlighting_fill=c("lightblue", "pink"),
     direction=c("v","h","v"))
     
     
-#====================================
 # Another possible set of splitting directions
 mosaic( ~ Dept + Gender + Admit, data=UCBAdmissions,
     highlighting="Admit", highlighting_fill=c("lightblue", "pink"),
@@ -664,27 +548,22 @@ mosaic( ~ Dept + Gender + Admit, data=UCBAdmissions,
 mosaic( ~ Dept + Gender + Admit, data=UCBAdmissions,
     highlighting="Admit", highlighting_fill=c("lightblue", "pink"),
     direction=c("v", "h", "h"))
-    
-    
-#====================================
+```    
+## 13.16.Creating a Pie Chart  
+```{r,fig.width=7,fig.height=5}
 library(MASS)  # For the data set
 
 # Get a table of how many cases are in each level of fold
 fold <- table(survey$Fold)
 fold
 
- #L on R Neither  R on L
-     #99      18     120
-
 # Make the pie chart
 pie(fold)
 
-    
-#====================================
 pie(c(99, 18, 120), labels=c("L on R", "Neither", "R on L"))
-    
-    
-#====================================
+```    
+## 13.17.Creating a Map  
+```{r,fig.width=7,fig.height=5}
 library(maps) # For map data
 # Get map data for USA
 states_map <- map_data("state")
@@ -696,29 +575,14 @@ ggplot(states_map, aes(x=long, y=lat, group=group)) +
 ggplot(states_map, aes(x=long, y=lat, group=group)) +
     geom_path() + coord_map("mercator")
     
-    
-#====================================
 # Get map data for world
 world_map <- map_data("world")
 head(world_map)
 
-#====================================
-sort(unique(world_map$region))
-
- #"Afghanistan"              "Albania"                  "Algeria"
- #"American Samoa"           "Andaman Islands"          "Andorra"
- #"Angola"                   "Anguilla"                 "Antarctica"
-  #...
- #"USA"                      "USSR"                     "Vanuatu"
- #"Venezuela"                "Vietnam"                  "Virgin Islands"
- #"Vislinskiy Zaliv"         "Wales"                    "West Bank"
- #"Western Sahara"           "Yemen"                    "Yugoslavia"
- #"Zaire"                    "Zambia"                   "Zimbabwe"
+head(sort(unique(world_map$region)))
 
 # You might have noticed that it's a little out of date!
     
-    
-#====================================
 east_asia <- map_data("world", region=c("Japan", "China", "North Korea",
                                         "South Korea"))
 # Map region to fill color
@@ -727,7 +591,6 @@ ggplot(east_asia, aes(x=long, y=lat, group=group, fill=region)) +
     scale_fill_brewer(palette="Set2")
     
     
-#====================================
 # Get New Zealand data from world map
 nz1 <- map_data("world", region="New Zealand")
 nz1 <- subset(nz1, long > 0 & lat > -48)        # Trim off islands
@@ -736,9 +599,9 @@ ggplot(nz1, aes(x=long, y=lat, group=group)) + geom_path()
 # Get New Zealand data from the nz map
 nz2 <- map_data("nz")
 ggplot(nz2, aes(x=long, y=lat, group=group)) + geom_path()
-    
-    
-#====================================
+```    
+## 13.18.Creating a Choropleth Map  
+```{r,fig.width=7,fig.height=5}
 # Transform the USArrests data set to the correct format
 crimes <- data.frame(state = tolower(rownames(USArrests)), USArrests)
 head(crimes)
@@ -760,13 +623,11 @@ library(plyr)  # For arrange() function
 crime_map <- arrange(crime_map, group, order)
 head(crime_map)
 
-#====================================
 ggplot(crime_map, aes(x=long, y=lat, group=group, fill=Assault)) +
     geom_polygon(colour="black") +
     coord_map("polyconic")
     
     
-#====================================
 ggplot(crimes, aes(map_id = state, fill=Assault)) +
     geom_map(map = states_map, colour="black") +
     scale_fill_gradient2(low="#559999", mid="grey90", high="#BB650B",
@@ -775,25 +636,19 @@ ggplot(crimes, aes(map_id = state, fill=Assault)) +
     coord_map("polyconic")
     
     
-#====================================
 # Find the quantile bounds
 qa <- quantile(crimes$Assault, c(0, 0.2, 0.4, 0.6, 0.8, 1.0))
 qa
-
-   #0%   20%   40%   60%   80%  100%
- #45.0  98.8 135.0 188.8 254.2 337.0
 
 # Add a column of the quantile category
 crimes$Assault_q <- cut(crimes$Assault, qa,
                       labels=c("0-20%", "20-40%", "40-60%", "60-80%", "80-100%"),
                       include.lowest=TRUE)
-crimes
+head(crimes)
 
 # Generate a discrete color palette with 5 values
 pal <- colorRampPalette(c("#559999", "grey80", "#BB650B"))(5)
 pal
-
- #"#559999" "#90B2B2" "#CCCCCC" "#C3986B" "#BB650B"
 
 ggplot(crimes, aes(map_id = state, fill=Assault_q)) +
     geom_map(map = states_map, colour="black") +
@@ -804,16 +659,15 @@ ggplot(crimes, aes(map_id = state, fill=Assault_q)) +
 
     
     
-#====================================
 # The 'state' column in the crimes data is to be matched to the 'region' column
 # in the states_map data
 ggplot(crimes, aes(map_id = state, fill=Assault)) +
     geom_map(map = states_map) +
     expand_limits(x = states_map$long, y = states_map$lat) +
     coord_map("polyconic")
-    
-    
-#====================================
+```    
+## 13.19.Making a Map with a Clean Background  
+```{r,fig.width=7,fig.height=5}
 # Create a theme with many of the background elements removed
 theme_clean <- function(base_size = 12) {
 require(grid) # Needed for unit() function
@@ -831,8 +685,6 @@ require(grid) # Needed for unit() function
   )
 }
     
-    
-#====================================
 ggplot(crimes, aes(map_id = state, fill=Assault_q)) +
     geom_map(map = states_map, colour="black") +
     scale_fill_manual(values=pal) +
@@ -840,14 +692,18 @@ ggplot(crimes, aes(map_id = state, fill=Assault_q)) +
     coord_map("polyconic") +
     labs(fill="Assault Rate\nPercentile") +
     theme_clean()
-    
-    
-#====================================
+```    
+## 13.20.Creating a Map from a Shapefile  
+```{r,fig.width=7,fig.height=5}
 #install.packages("maptools")
 #install.packages("sp")
 # 首先要安装这两个包
 library(maptools)
+gpclibPermit()
 
+# 地图包从这里下载：http://www.gadm.org/
+# 记住要把几个TWN_adm2的文件都放在TWN_adm文件夹下
+# 仅仅放一个shp会报错
 # Load the shapefile and convert to a data frame
 taiwan_shp <- readShapePoly("TWN_adm/TWN_adm2.shp")
 taiwan_map <- fortify(taiwan_shp)
@@ -855,31 +711,14 @@ taiwan_map <- fortify(taiwan_shp)
 ggplot(taiwan_map, aes(x = long, y = lat, group=group)) + geom_path()
     
     
-#====================================
 taiwan_shp <- readShapePoly("TWN_adm/TWN_adm2.shp")
 
 # Look at the structure of the object
-str(taiwan_shp)
+head(str(taiwan_shp))
 
-#Formal class 'SpatialPolygonsDataFrame' [package "sp"] with 5 slots
-  #..@ data       :'data.frame': 22 obs. of  11 variables:
-  #.. ..$ ID_0     : int [1:22] 223 223 223 223 223 223 223 223 223 223 ...
-  #.. ..$ ISO      : Factor w/ 1 level "TWN": 1 1 1 1 1 1 1 1 1 1 ...
-  #.. ..$ NAME_0   : Factor w/ 1 level "Taiwan": 1 1 1 1 1 1 1 1 1 1 ...
-  #.. ..$ ID_1     : int [1:22] 1 2 3 4 4 4 4 4 4 4 ...
- #... [lots more stuff]
-  #..@ proj4string:Formal class 'CRS' [package "sp"] with 1 slots
-  #.. .. ..@ projargs: chr NA
-
-    
-    
-#====================================
 taiwan_map <- fortify(taiwan_shp)
-taiwan_map
+head(taiwan_map)
 
-#====================================
 # Send the SpatialPolygonsDataFrame directly to ggplot()
 ggplot(taiwan_shp, aes(x=long, y=lat, group=group)) + geom_path()
-    
-    
-#==================
+```
