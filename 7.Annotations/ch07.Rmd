@@ -1,13 +1,18 @@
 # chapter: Annotations
 ## 7.1.Adding Text Annotations 
+* Problem
+希望往图片上添加文字。
+* Solution
+用annotate()和text geom（文字对象）：如下：
 ```{r,fig.width=7,fig.height=5}
 library(ggplot2)
 p <- ggplot(faithful, aes(x=eruptions, y=waiting)) + geom_point()
 
 p + annotate("text", x=3, y=48, label="Group 1") +
     annotate("text", x=4.5, y=66, label="Group 2")
-    
-    
+```    
+我们可以设置文字的大小，字体，颜色等。如下：    
+```{r,fig.width=7,fig.height=5}
 p + annotate("text", x=3, y=48, label="Group 1", family="serif",
              fontface="italic", colour="darkred", size=3) +
     annotate("text", x=4.5, y=66, label="Group 2", family="serif",
