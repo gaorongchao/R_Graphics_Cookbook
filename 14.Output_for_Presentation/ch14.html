@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="x-ua-compatible" content="IE=9" >
 
-<title></title>
+<title>chapter14: Output for Presentation</title>
 
 <style type="text/css">
 body, td {
@@ -179,11 +179,11 @@ hljs.initHighlightingOnLoad();
 </head>
 
 <body>
-<p>chapter: Output for Presentation</p>
+<h1>chapter14: Output for Presentation</h1>
 
-<pre><code class="r">
-# ==================
-library(ggplot2)
+<h2>14.1.Outputting to PDF Vector Files</h2>
+
+<pre><code class="r">library(ggplot2)
 # width and height are in inches
 pdf(&quot;myplot.pdf&quot;, width = 4, height = 4)
 
@@ -199,20 +199,18 @@ dev.off()
 </code></pre>
 
 <pre><code class="r">
-
-# ==================================== 8x8 cm
+# 8x8 cm
 pdf(&quot;myplot.pdf&quot;, width = 8/2.54, height = 8/2.54)
 
-
-# ====================================
 ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
 
 # Default is inches, but you can specify unit
 ggsave(&quot;myplot.pdf&quot;, width = 8, height = 8, units = &quot;cm&quot;)
+</code></pre>
 
+<h2>14.2.Outputting to SVG Vector Files</h2>
 
-# ====================================
-svg(&quot;myplot.svg&quot;, width = 4, height = 4)
+<pre><code class="r">svg(&quot;myplot.svg&quot;, width = 4, height = 4)
 plot(...)
 </code></pre>
 
@@ -229,10 +227,11 @@ plot(...)
 <pre><code class="r">
 # With ggsave()
 ggsave(&quot;myplot.svg&quot;, width = 8, height = 8, units = &quot;cm&quot;)
+</code></pre>
 
+<h2>14.3.Outputting to WMF Vector Files</h2>
 
-# ====================================
-win.metafile(&quot;myplot.wmf&quot;, width = 4, height = 4)
+<pre><code class="r">win.metafile(&quot;myplot.wmf&quot;, width = 4, height = 4)
 plot(...)
 </code></pre>
 
@@ -249,16 +248,19 @@ plot(...)
 <pre><code class="r">
 # With ggsave()
 ggsave(&quot;myplot.wmf&quot;, width = 8, height = 8, units = &quot;cm&quot;)
+</code></pre>
 
+<h2>14.4.Editing a Vector Ouput File</h2>
 
-# ====================================
-pdf(&quot;myplot.pdf&quot;, width = 4, height = 4, useDingbats = FALSE)
+<pre><code class="r">pdf(&quot;myplot.pdf&quot;, width = 4, height = 4, useDingbats = FALSE)
 
 # or
 ggsave(&quot;myplot.pdf&quot;, width = 4, height = 4, useDingbats = FALSE)
+</code></pre>
 
+<h2>14.5.Outputting to Bitmap (PNG/TIFF) Files</h2>
 
-# ==================================== width and height are in pixels
+<pre><code class="r"># width and height are in pixels
 png(&quot;myplot.png&quot;, width = 400, height = 400)
 
 # Make plot
@@ -272,8 +274,7 @@ dev.off()
 </code></pre>
 
 <pre><code class="r">
-
-# ==================================== width and height are in pixels
+# width and height are in pixels
 png(&quot;myplot-%d.png&quot;, width = 400, height = 400)
 
 plot(mtcars$wt, mtcars$mpg)
@@ -288,7 +289,6 @@ dev.off()
 
 <pre><code class="r">
 
-# ====================================
 ppi &lt;- 300
 # Calculate the height and width (in pixels) for a 4x4-inch image at 300 ppi
 png(&quot;myplot.png&quot;, width = 4 * ppi, height = 4 * ppi, res = ppi)
@@ -302,31 +302,20 @@ dev.off()
 
 <pre><code class="r">
 
-# ====================================
 ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point()
 </code></pre>
 
-<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-1"/> </p>
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-5"/> </p>
 
 <pre><code class="r">
 # Default dimensions are in inches, but you can specify the unit
 ggsave(&quot;myplot.png&quot;, width = 8, height = 8, unit = &quot;cm&quot;, dpi = 300)
 
 
-# ====================================
-install.packages(&quot;Cairo&quot;)  # One-time installation
-</code></pre>
-
-<pre><code>## Error: trying to use CRAN without setting a mirror
-</code></pre>
-
-<pre><code class="r">CairoPNG(&quot;myplot.png&quot;)
-</code></pre>
-
-<pre><code>## Error: 没有&quot;CairoPNG&quot;这个函数
-</code></pre>
-
-<pre><code class="r">plot(...)
+# install.packages(&#39;Cairo&#39;) # One-time installation
+library(&quot;Cairo&quot;)
+CairoPNG(&quot;myplot.png&quot;)
+plot(...)
 </code></pre>
 
 <pre><code>## Error: &#39;...&#39;用在的上下文不对
@@ -336,22 +325,16 @@ install.packages(&quot;Cairo&quot;)  # One-time installation
 </code></pre>
 
 <pre><code>## pdf 
-##   3
+##   2
 </code></pre>
 
-<pre><code class="r">
+<h2>14.6.Using Fonts in PDF Files</h2>
 
-# ====================================
-install.packages(&quot;extrafont&quot;)
+<pre><code class="r"># install.packages(&#39;extrafont&#39;)
+library(extrafont)
 </code></pre>
 
-<pre><code>## Error: trying to use CRAN without setting a mirror
-</code></pre>
-
-<pre><code class="r">library(extrafont)
-</code></pre>
-
-<pre><code>## Error: there is no package called &#39;extrafont&#39;
+<pre><code>## Registering fonts with R
 </code></pre>
 
 <pre><code class="r">
@@ -359,7 +342,11 @@ install.packages(&quot;extrafont&quot;)
 font_import()
 </code></pre>
 
-<pre><code>## Error: 没有&quot;font_import&quot;这个函数
+<pre><code>## Importing fonts may take a few minutes, depending on the number of fonts and the speed of the system.
+## Continue? [y/n]
+</code></pre>
+
+<pre><code>## Exiting.
 </code></pre>
 
 <pre><code class="r">
@@ -367,152 +354,28 @@ font_import()
 fonts()
 </code></pre>
 
-<pre><code>## Error: 没有&quot;fonts&quot;这个函数
+<pre><code>## NULL
 </code></pre>
 
 <pre><code class="r">
 
-# ====================================
 library(extrafont)
-</code></pre>
-
-<pre><code>## Error: there is no package called &#39;extrafont&#39;
-</code></pre>
-
-<pre><code class="r"># Register the fonts with R
+# Register the fonts with R
 loadfonts()
-</code></pre>
 
-<pre><code>## Error: 没有&quot;loadfonts&quot;这个函数
-</code></pre>
-
-<pre><code class="r">
 # On Windows, you may need to tell it where Ghostscript is installed (adjust
 # the path to match your installation of Ghostscript)
 Sys.setenv(R_GSCMD = &quot;C:/Program Files/gs/gs9.05/bin/gswin32c.exe&quot;)
 
-
-# ====================================
 library(ggplot2)
 ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point() + ggtitle(&quot;Title text goes here&quot;) + 
     theme(text = element_text(size = 16, family = &quot;Impact&quot;))
 </code></pre>
 
-<pre><code>## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-</code></pre>
-
-<pre><code>## Error: 字体类别出错
-</code></pre>
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-6"/> </p>
 
 <pre><code class="r">
 ggsave(&quot;myplot.pdf&quot;, width = 4, height = 4)
-</code></pre>
-
-<pre><code>## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Impact&#39;这个字体系列
 </code></pre>
 
 <pre><code>## Error: 字体类别出错
@@ -522,30 +385,33 @@ ggsave(&quot;myplot.pdf&quot;, width = 4, height = 4)
 embed_fonts(&quot;myplot.pdf&quot;)
 </code></pre>
 
-<pre><code>## Error: 没有&quot;embed_fonts&quot;这个函数
+<pre><code>## Error: status 127 in running command &#39;C:\Program
+## Files\gs\gs9.05\bin\gswin32c.exe -dNOPAUSE -dBATCH -q
+## -dAutoRotatePages=/None -sDEVICE=pdfwrite
+## -sOutputFile=C:\Users\GRC\AppData\Local\Temp\RtmpQFSXsL\Rembedf1448a320d5
+## &quot;-sFONTPATH=&quot; -I&quot;C:\Program Files\R\R-3.0.2\library\extrafontdb\fontmap&quot;
+## &quot;myplot.pdf&quot;&#39;
 </code></pre>
 
-<pre><code class="r">
+<h2>14.7.Using Fonts in Windows Bitmap or Screen Output</h2>
 
-# ====================================
-install.packages(&quot;extrafont&quot;)
+<pre><code class="r">install.packages(&quot;extrafont&quot;)
 </code></pre>
 
 <pre><code>## Error: trying to use CRAN without setting a mirror
 </code></pre>
 
 <pre><code class="r">library(extrafont)
-</code></pre>
 
-<pre><code>## Error: there is no package called &#39;extrafont&#39;
-</code></pre>
-
-<pre><code class="r">
 # Find and save information about fonts installed on your system
 font_import()
 </code></pre>
 
-<pre><code>## Error: 没有&quot;font_import&quot;这个函数
+<pre><code>## Importing fonts may take a few minutes, depending on the number of fonts and the speed of the system.
+## Continue? [y/n]
+</code></pre>
+
+<pre><code>## Exiting.
 </code></pre>
 
 <pre><code class="r">
@@ -553,112 +419,23 @@ font_import()
 fonts()
 </code></pre>
 
-<pre><code>## Error: 没有&quot;fonts&quot;这个函数
+<pre><code>## NULL
 </code></pre>
 
 <pre><code class="r">
-
-# ====================================
 library(extrafont)
-</code></pre>
-
-<pre><code>## Error: there is no package called &#39;extrafont&#39;
-</code></pre>
-
-<pre><code class="r"># Register the fonts for Windows
+# Register the fonts for Windows
 loadfonts(&quot;win&quot;)
-</code></pre>
 
-<pre><code>## Error: 没有&quot;loadfonts&quot;这个函数
-</code></pre>
-
-<pre><code class="r">
-
-# ====================================
 library(ggplot2)
 ggplot(mtcars, aes(x = wt, y = mpg)) + geom_point() + ggtitle(&quot;Title text goes here&quot;) + 
     theme(text = element_text(size = 16, family = &quot;Georgia&quot;, face = &quot;italic&quot;))
 </code></pre>
 
-<pre><code>## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-## Warning: PostScript字体数据库里找不到&#39;Georgia&#39;这个字体系列
-</code></pre>
-
-<pre><code>## Error: 字体类别出错
-</code></pre>
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-7"/> </p>
 
 <pre><code class="r">
 ggsave(&quot;myplot.png&quot;, width = 4, height = 4, dpi = 300)
-</code></pre>
-
-<pre><code>## Warning: Windows字体数据库里没有这样的字体系列
-## Warning: Windows字体数据库里没有这样的字体系列
-## Warning: Windows字体数据库里没有这样的字体系列
-## Warning: Windows字体数据库里没有这样的字体系列
-## Warning: Windows字体数据库里没有这样的字体系列
-## Warning: Windows字体数据库里没有这样的字体系列
-## Warning: Windows字体数据库里没有这样的字体系列
-## Warning: Windows字体数据库里没有这样的字体系列
-## Warning: Windows字体数据库里没有这样的字体系列
-## Warning: Windows字体数据库里没有这样的字体系列
-## Warning: Windows字体数据库里没有这样的字体系列
-## Warning: Windows字体数据库里没有这样的字体系列
-</code></pre>
-
-<pre><code class="r">
-
-# ==================
 </code></pre>
 
 </body>
