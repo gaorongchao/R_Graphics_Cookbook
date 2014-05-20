@@ -1,6 +1,7 @@
 # chapter12: Using Colors in Plots
 ## 12.1.Setting the Colors of Objects
 ```{r,fig.width=7,fig.height=5}
+install.packages("ggplot2")
 library(ggplot2)
 ggplot(mtcars, aes(x=wt, y=mpg)) + geom_point(colour="red")
 
