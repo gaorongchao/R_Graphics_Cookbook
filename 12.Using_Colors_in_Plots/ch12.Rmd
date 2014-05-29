@@ -1,14 +1,14 @@
-# chapter12: Using Colors in Plots
-## 12.1.Setting the Colors of Objects
+# chapter12: 图形中色彩的使用
+## 12.1.配置对象的颜色
 ```{r,fig.width=7,fig.height=5}
-install.packages("ggplot2")
+#install.packages("ggplot2")
 library(ggplot2)
 ggplot(mtcars, aes(x=wt, y=mpg)) + geom_point(colour="red")
 
 library(MASS) # For the data set
 ggplot(birthwt, aes(x=bwt)) + geom_histogram(fill="red", colour="black")
 ```    
-## 12.2.Mapping Variables to Colors 
+## 12.2.将变量映射到颜色上
 ```{r,fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
@@ -34,7 +34,7 @@ m <- mtcars              # Make a copy of mtcars
 m$cyl <- factor(m$cyl)   # Convert cyl to a factor
 ggplot(m, aes(x=wt, y=mpg, colour=cyl)) + geom_point()
 ```    
-## 12.3.Using a Different Palette for a Discrete Variable
+## 12.3.对离散变量使用不同的调色板
 ```{r,fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
@@ -69,7 +69,7 @@ p + scale_fill_grey()
 # Reverse the direction and use a different range of greys
 p + scale_fill_grey(start=0.7, end=0)
 ```
-## 12.4.Using a Manually Defined Palette for a Discrete Variable
+## 12.4.对离散变量使用自定义调色板
 ```{r,fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
@@ -86,7 +86,7 @@ levels(heightweight$sex)
 
 h + scale_colour_manual(values=c(m="blue", f="red"))
 ```
-## 12.5.Using a Colorblind-Friendly Palette
+## 12.5.使用色盲友好式的面板
 ```{r,fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
@@ -103,7 +103,7 @@ p + scale_fill_manual(values=cb_palette)
 c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00",
   "#CC79A7")
 ```
-## 12.6.Using a Manually Defined Palette for a Continuous Variable
+## 12.6.对连续型变量使用自定义调色板
 ```{r,fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
@@ -124,7 +124,7 @@ p + scale_colour_gradient2(low=muted("red"), mid="white", high=muted("blue"),
 # A gradient of n colors
 p + scale_colour_gradientn(colours = c("darkred", "orange", "yellow", "white"))
 ```
-## 12.7.Coloring a Shaded Region Based on Value
+## 12.7.根据数值设定阴影颜色
 ```{r,fig.width=7,fig.height=5}
 library(gcookbook) # For the data set
 
